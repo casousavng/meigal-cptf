@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratório Interativo CPTF - Meigal</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#b9dffe',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              navy: '#0b2239',
+              accent: '#e11d48',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom subtle scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .pulse-subtle {
+      animation: pulseLight 2.5s infinite;
+    }
+    @keyframes pulseLight {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.95; transform: scale(1.008); }
+    }
+  </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:"Plus Jakarta Sans", sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:"JetBrains Mono", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.right-5{right:1.25rem}.top-0{top:0px}.top-5{top:1.25rem}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-1\.5{margin-bottom:0.375rem}.mb-3{margin-bottom:0.75rem}.mr-1{margin-right:0.25rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-auto{margin-top:auto}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-2\.5{height:0.625rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-1\.5{height:0.375rem}.max-h-\[85vh\]{max-height:85vh}.min-h-\[115px\]{min-height:115px}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-2\.5{width:0.625rem}.w-7{width:1.75rem}.w-8{width:2rem}.w-full{width:100%}.w-1\.5{width:0.375rem}.w-3\.5{width:0.875rem}.max-w-2xl{max-width:42rem}.max-w-7xl{max-width:80rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-y-\[-120\%\]{--tw-translate-y:-120%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.resize-y{resize:vertical}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-2\.5{gap:0.625rem}.gap-3{gap:0.75rem}.gap-3\.5{gap:0.875rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-2\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.625rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-xl{border-radius:0.75rem}.rounded-r-xl{border-top-right-radius:0.75rem;border-bottom-right-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-t{border-top-width:1px}.border-amber-100{--tw-border-opacity:1;border-color:rgb(254 243 199 / var(--tw-border-opacity, 1))}.border-amber-200{--tw-border-opacity:1;border-color:rgb(253 230 138 / var(--tw-border-opacity, 1))}.border-amber-600{--tw-border-opacity:1;border-color:rgb(217 119 6 / var(--tw-border-opacity, 1))}.border-blue-100{--tw-border-opacity:1;border-color:rgb(219 234 254 / var(--tw-border-opacity, 1))}.border-blue-200{--tw-border-opacity:1;border-color:rgb(191 219 254 / var(--tw-border-opacity, 1))}.border-blue-600{--tw-border-opacity:1;border-color:rgb(37 99 235 / var(--tw-border-opacity, 1))}.border-emerald-100{--tw-border-opacity:1;border-color:rgb(209 250 229 / var(--tw-border-opacity, 1))}.border-emerald-200{--tw-border-opacity:1;border-color:rgb(167 243 208 / var(--tw-border-opacity, 1))}.border-emerald-600{--tw-border-opacity:1;border-color:rgb(5 150 105 / var(--tw-border-opacity, 1))}.border-sky-600\/40{border-color:rgb(2 132 199 / 0.4)}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.border-slate-600\/60{border-color:rgb(71 85 105 / 0.6)}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.border-violet-100{--tw-border-opacity:1;border-color:rgb(237 233 254 / var(--tw-border-opacity, 1))}.border-violet-200{--tw-border-opacity:1;border-color:rgb(221 214 254 / var(--tw-border-opacity, 1))}.border-violet-600{--tw-border-opacity:1;border-color:rgb(124 58 237 / var(--tw-border-opacity, 1))}.bg-amber-50\/50{background-color:rgb(255 251 235 / 0.5)}.bg-amber-50\/70{background-color:rgb(255 251 235 / 0.7)}.bg-amber-600{--tw-bg-opacity:1;background-color:rgb(217 119 6 / var(--tw-bg-opacity, 1))}.bg-blue-50\/50{background-color:rgb(239 246 255 / 0.5)}.bg-blue-50\/70{background-color:rgb(239 246 255 / 0.7)}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-brand-navy{--tw-bg-opacity:1;background-color:rgb(11 34 57 / var(--tw-bg-opacity, 1))}.bg-emerald-100{--tw-bg-opacity:1;background-color:rgb(209 250 229 / var(--tw-bg-opacity, 1))}.bg-emerald-50\/50{background-color:rgb(236 253 245 / 0.5)}.bg-emerald-50\/70{background-color:rgb(236 253 245 / 0.7)}.bg-emerald-500{--tw-bg-opacity:1;background-color:rgb(16 185 129 / var(--tw-bg-opacity, 1))}.bg-emerald-600{--tw-bg-opacity:1;background-color:rgb(5 150 105 / var(--tw-bg-opacity, 1))}.bg-sky-600{--tw-bg-opacity:1;background-color:rgb(2 132 199 / var(--tw-bg-opacity, 1))}.bg-sky-900\/80{background-color:rgb(12 74 110 / 0.8)}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-200{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1))}.bg-slate-900\/60{background-color:rgb(15 23 42 / 0.6)}.bg-violet-50\/50{background-color:rgb(245 243 255 / 0.5)}.bg-violet-50\/70{background-color:rgb(245 243 255 / 0.7)}.bg-violet-600{--tw-bg-opacity:1;background-color:rgb(124 58 237 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/20{background-color:rgb(255 255 255 / 0.2)}.bg-white\/25{background-color:rgb(255 255 255 / 0.25)}.bg-slate-300{--tw-bg-opacity:1;background-color:rgb(203 213 225 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-amber-600{--tw-gradient-from:#d97706 var(--tw-gradient-from-position);--tw-gradient-to:rgb(217 119 6 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-blue-700{--tw-gradient-from:#1d4ed8 var(--tw-gradient-from-position);--tw-gradient-to:rgb(29 78 216 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-emerald-600{--tw-gradient-from:#059669 var(--tw-gradient-from-position);--tw-gradient-to:rgb(5 150 105 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-sky-500{--tw-gradient-from:#0ea5e9 var(--tw-gradient-from-position);--tw-gradient-to:rgb(14 165 233 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-sky-600{--tw-gradient-from:#0284c7 var(--tw-gradient-from-position);--tw-gradient-to:rgb(2 132 199 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-violet-700{--tw-gradient-from:#6d28d9 var(--tw-gradient-from-position);--tw-gradient-to:rgb(109 40 217 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-blue-600{--tw-gradient-to:#2563eb var(--tw-gradient-to-position)}.to-blue-700{--tw-gradient-to:#1d4ed8 var(--tw-gradient-to-position)}.to-purple-600{--tw-gradient-to:#9333ea var(--tw-gradient-to-position)}.to-teal-600{--tw-gradient-to:#0d9488 var(--tw-gradient-to-position)}.to-yellow-600{--tw-gradient-to:#ca8a04 var(--tw-gradient-to-position)}.p-1{padding:0.25rem}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-3\.5{padding:0.875rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-3\.5{padding-left:0.875rem;padding-right:0.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-3\.5{padding-top:0.875rem;padding-bottom:0.875rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-1{padding-bottom:0.25rem}.pb-3{padding-bottom:0.75rem}.pl-1{padding-left:0.25rem}.pt-1{padding-top:0.25rem}.pt-2{padding-top:0.5rem}.pt-3{padding-top:0.75rem}.font-mono{font-family:"JetBrains Mono", monospace}.font-sans{font-family:"Plus Jakarta Sans", sans-serif}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.italic{font-style:italic}.leading-none{line-height:1}.leading-normal{line-height:1.5}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.text-amber-100{--tw-text-opacity:1;color:rgb(254 243 199 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-amber-400{--tw-text-opacity:1;color:rgb(251 191 36 / var(--tw-text-opacity, 1))}.text-amber-500{--tw-text-opacity:1;color:rgb(245 158 11 / var(--tw-text-opacity, 1))}.text-amber-600{--tw-text-opacity:1;color:rgb(217 119 6 / var(--tw-text-opacity, 1))}.text-amber-700{--tw-text-opacity:1;color:rgb(180 83 9 / var(--tw-text-opacity, 1))}.text-blue-100{--tw-text-opacity:1;color:rgb(219 234 254 / var(--tw-text-opacity, 1))}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-blue-700{--tw-text-opacity:1;color:rgb(29 78 216 / var(--tw-text-opacity, 1))}.text-emerald-100{--tw-text-opacity:1;color:rgb(209 250 229 / var(--tw-text-opacity, 1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-emerald-600{--tw-text-opacity:1;color:rgb(5 150 105 / var(--tw-text-opacity, 1))}.text-emerald-700{--tw-text-opacity:1;color:rgb(4 120 87 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-sky-400{--tw-text-opacity:1;color:rgb(56 189 248 / var(--tw-text-opacity, 1))}.text-sky-600{--tw-text-opacity:1;color:rgb(2 132 199 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-violet-100{--tw-text-opacity:1;color:rgb(237 233 254 / var(--tw-text-opacity, 1))}.text-violet-600{--tw-text-opacity:1;color:rgb(124 58 237 / var(--tw-text-opacity, 1))}.text-violet-700{--tw-text-opacity:1;color:rgb(109 40 217 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-0{opacity:0}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-emerald-600\/30{--tw-shadow-color:rgb(5 150 105 / 0.3);--tw-shadow:var(--tw-shadow-colored)}.shadow-sky-600\/20{--tw-shadow-color:rgb(2 132 199 / 0.2);--tw-shadow:var(--tw-shadow-colored)}.shadow-sky-600\/30{--tw-shadow-color:rgb(2 132 199 / 0.3);--tw-shadow:var(--tw-shadow-colored)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.hover\:bg-amber-100:hover{--tw-bg-opacity:1;background-color:rgb(254 243 199 / var(--tw-bg-opacity, 1))}.hover\:bg-blue-100:hover{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity, 1))}.hover\:bg-emerald-100:hover{--tw-bg-opacity:1;background-color:rgb(209 250 229 / var(--tw-bg-opacity, 1))}.hover\:bg-emerald-500:hover{--tw-bg-opacity:1;background-color:rgb(16 185 129 / var(--tw-bg-opacity, 1))}.hover\:bg-sky-50:hover{--tw-bg-opacity:1;background-color:rgb(240 249 255 / var(--tw-bg-opacity, 1))}.hover\:bg-sky-500:hover{--tw-bg-opacity:1;background-color:rgb(14 165 233 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-300:hover{--tw-bg-opacity:1;background-color:rgb(203 213 225 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-700:hover{--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-800:hover{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.hover\:bg-violet-100:hover{--tw-bg-opacity:1;background-color:rgb(237 233 254 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-400:hover{--tw-bg-opacity:1;background-color:rgb(148 163 184 / var(--tw-bg-opacity, 1))}.hover\:from-sky-500:hover{--tw-gradient-from:#0ea5e9 var(--tw-gradient-from-position);--tw-gradient-to:rgb(14 165 233 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.hover\:to-blue-500:hover{--tw-gradient-to:#3b82f6 var(--tw-gradient-to-position)}.hover\:text-amber-700:hover{--tw-text-opacity:1;color:rgb(180 83 9 / var(--tw-text-opacity, 1))}.hover\:text-amber-800:hover{--tw-text-opacity:1;color:rgb(146 64 14 / var(--tw-text-opacity, 1))}.hover\:text-blue-700:hover{--tw-text-opacity:1;color:rgb(29 78 216 / var(--tw-text-opacity, 1))}.hover\:text-blue-800:hover{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.hover\:text-emerald-700:hover{--tw-text-opacity:1;color:rgb(4 120 87 / var(--tw-text-opacity, 1))}.hover\:text-emerald-800:hover{--tw-text-opacity:1;color:rgb(6 95 70 / var(--tw-text-opacity, 1))}.hover\:text-sky-700:hover{--tw-text-opacity:1;color:rgb(3 105 161 / var(--tw-text-opacity, 1))}.hover\:text-slate-800:hover{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.hover\:text-violet-700:hover{--tw-text-opacity:1;color:rgb(109 40 217 / var(--tw-text-opacity, 1))}.hover\:text-violet-800:hover{--tw-text-opacity:1;color:rgb(91 33 182 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:shadow:hover{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.hover\:shadow-md:hover{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-amber-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(245 158 11 / var(--tw-ring-opacity, 1))}.focus\:ring-blue-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(59 130 246 / var(--tw-ring-opacity, 1))}.focus\:ring-emerald-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(16 185 129 / var(--tw-ring-opacity, 1))}.focus\:ring-sky-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(14 165 233 / var(--tw-ring-opacity, 1))}.focus\:ring-violet-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(139 92 246 / var(--tw-ring-opacity, 1))}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@media (min-width: 640px){.sm\:inline{display:inline}.sm\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.sm\:flex-row{flex-direction:row}.sm\:p-6{padding:1.5rem}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:pb-0{padding-bottom:0px}}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:col-span-4{grid-column:span 4 / span 4}.lg\:col-span-8{grid-column:span 8 / span 8}.lg\:grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}.lg\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.lg\:px-8{padding-left:2rem;padding-right:2rem}}</style></head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="fixed top-5 right-5 z-50 flex items-center gap-3 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-[-120%] opacity-0 pointer-events-none">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-lg" id="toast-icon"></i>
+    <span id="toast-msg" class="text-sm font-medium">Ação concluída com sucesso!</span>
+  </div>
+
+  <!-- Top Navigation / Header -->
+  <header class="bg-brand-navy text-white border-b border-slate-700/60 sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-blue-700 flex items-center justify-center shadow-lg font-bold text-white text-lg tracking-wider">
+          M
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold tracking-tight text-white">Laboratório de Prompts CPTF</h1>
+            <span class="text-[11px] font-semibold uppercase tracking-wider bg-sky-900/80 text-sky-300 px-2 py-0.5 rounded-full border border-sky-600/40">Meigal • Grupo Lusiaves</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="flex items-center gap-2">
+        <button id="btn-share" onclick="downloadSelfHTML()" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition shadow-sm shadow-emerald-600/30" title="Guardar ficheiro HTML para partilhar com os formandos">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Partilhar / Guardar</span>
+        </button>
+        <button id="btn-randomize" onclick="randomizeAll()" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-600/60 transition shadow-sm hover:text-white" title="Combinar aleatoriamente">
+          <i class="fa-solid fa-dice text-amber-400"></i>
+          <span>Aleatório</span>
+        </button>
+        <button id="btn-reset" onclick="resetToDefault()" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-600/60 transition shadow-sm hover:text-white" title="Repor primeiro exemplo">
+          <i class="fa-solid fa-rotate-left text-sky-400"></i>
+          <span class="hidden sm:inline">Repor</span>
+        </button>
+        <button onclick="toggleModal('infoModal')" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold transition shadow-sm shadow-sky-600/30">
+          <i class="fa-solid fa-circle-question"></i>
+          <span>O que é CPTF?</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Presets Bar -->
+  <section class="bg-white border-b border-slate-200 py-2.5 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto text-xs pb-1 sm:pb-0">
+      <span class="text-slate-400 font-semibold uppercase text-[10px] tracking-wider shrink-0 flex items-center gap-1.5 pl-1">
+        <i class="fa-solid fa-bolt text-amber-500"></i> Cenários Prontos:
+      </span>
+      <div class="flex items-center gap-1.5">
+        <button onclick="applyPreset(2, 1, 6, 1)" class="preset-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-50 hover:text-sky-700 border border-slate-200 text-slate-700 whitespace-nowrap transition font-medium">
+          🛎️ Reclamação HORECA
+        </button>
+        <button onclick="applyPreset(4, 2, 3, 3)" class="preset-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-50 hover:text-sky-700 border border-slate-200 text-slate-700 whitespace-nowrap transition font-medium">
+          📦 Expedição &amp; Armazém
+        </button>
+        <button onclick="applyPreset(6, 4, 5, 8)" class="preset-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-50 hover:text-sky-700 border border-slate-200 text-slate-700 whitespace-nowrap transition font-medium">
+          💼 Reunião Comercial
+        </button>
+        <button onclick="applyPreset(7, 5, 4, 2)" class="preset-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-50 hover:text-sky-700 border border-slate-200 text-slate-700 whitespace-nowrap transition font-medium">
+          📊 Análise de Ocorrências
+        </button>
+        <button onclick="applyPreset(9, 6, 9, 4)" class="preset-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-50 hover:text-sky-700 border border-slate-200 text-slate-700 whitespace-nowrap transition font-medium">
+          🎓 Formação Gemini Meigal
+        </button>
+        <button onclick="applyPreset(5, 3, 0, 7)" class="preset-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-50 hover:text-sky-700 border border-slate-200 text-slate-700 whitespace-nowrap transition font-medium">
+          📑 Faturação / Administrativo
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full flex flex-col gap-6">
+
+    <!-- Top Grid: The 4 CPTF Selectors -->
+    <div>
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span>
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">1. Seleciona os 4 Componentes</h2>
+        </div>
+        <span class="text-xs text-slate-500">Podes navegar com as setas ou selecionar pelo menu</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <!-- COMPONENTE: CONTEXTO (C) -->
+        <div class="bg-white rounded-2xl border border-blue-200 shadow-sm hover:shadow-md transition flex flex-col overflow-hidden relative group">
+          <div class="bg-gradient-to-r from-blue-700 to-blue-600 text-white p-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-white/20 font-mono font-bold flex items-center justify-center text-sm shadow-inner">C</span>
+              <div>
+                <h3 class="font-bold text-sm leading-tight">Contexto</h3>
+                <p class="text-[10px] text-blue-100 leading-none mt-0.5">Quem pede, para quem é e dados base</p>
+              </div>
+            </div>
+            <span id="badge-c" class="text-xs font-mono font-bold bg-white/25 px-2 py-0.5 rounded-full">#1</span>
+          </div>
+
+          <div class="p-3.5 flex-1 flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-1.5">
+                <label for="select-c" class="font-medium text-slate-600">Exemplo:</label>
+                <button onclick="openOverviewModal('contexto')" class="text-blue-600 hover:text-blue-800 text-[11px] font-semibold inline-flex items-center gap-1">
+                  <i class="fa-regular fa-folder-open"></i> Ver todos (10)
+                </button>
+              </div>
+              <select id="select-c" onchange="changeSelection('contexto', this.value)" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="0">1. Trabalho na equipa comercial da Meigal e preciso de ...</option><option value="1">2. Sou gestor de operações da Meigal, empresa do Grupo ...</option><option value="2">3. Estou a apoiar um cliente HORECA que reportou uma di...</option><option value="3">4. Sou comercial e vou reunir com um cliente da indústr...</option><option value="4">5. Trabalho na expedição do centro de distribuição de L...</option><option value="5">6. Sou administrativo e recebi um pedido de atualização...</option><option value="6">7. Sou chefe de vendas e vou fazer uma reunião semanal ...</option><option value="7">8. Trabalho na logística e estou a analisar reclamações...</option><option value="8">9. Sou gestor de operações e quero preparar uma breve a...</option><option value="9">10. Sou formador numa sessão de Gemini para colaboradore...</option></select>
+            </div>
+
+            <!-- Current Text View -->
+            <div class="bg-blue-50/70 border border-blue-100 rounded-xl p-3 min-h-[115px] flex items-center">
+              <p id="text-c" class="text-xs text-slate-700 leading-relaxed italic">"Trabalho na equipa comercial da Meigal e preciso de responder a um cliente de retalho que pediu informação sobre a entrega de uma encomenda."</p>
+            </div>
+
+            <!-- Stepper Navigation -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+              <button onclick="stepComponent('contexto', -1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-blue-100 text-slate-600 hover:text-blue-700 flex items-center justify-center transition" title="Exemplo anterior">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <div class="flex items-center gap-1" id="dots-c"><span class="h-1.5 rounded-full transition cursor-pointer w-3.5 bg-blue-600" title="Exemplo 1"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 2"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 3"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 4"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 5"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 6"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 7"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 8"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 9"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 10"></span></div>
+              <button onclick="stepComponent('contexto', 1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-blue-100 text-slate-600 hover:text-blue-700 flex items-center justify-center transition" title="Exemplo seguinte">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPONENTE: PAPEL (P) -->
+        <div class="bg-white rounded-2xl border border-violet-200 shadow-sm hover:shadow-md transition flex flex-col overflow-hidden relative group">
+          <div class="bg-gradient-to-r from-violet-700 to-purple-600 text-white p-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-white/20 font-mono font-bold flex items-center justify-center text-sm shadow-inner">P</span>
+              <div>
+                <h3 class="font-bold text-sm leading-tight">Papel</h3>
+                <p class="text-[10px] text-violet-100 leading-none mt-0.5">Função, cargo ou perspetiva adotada</p>
+              </div>
+            </div>
+            <span id="badge-p" class="text-xs font-mono font-bold bg-white/25 px-2 py-0.5 rounded-full">#1</span>
+          </div>
+
+          <div class="p-3.5 flex-1 flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-1.5">
+                <label for="select-p" class="font-medium text-slate-600">Exemplo:</label>
+                <button onclick="openOverviewModal('papel')" class="text-violet-600 hover:text-violet-800 text-[11px] font-semibold inline-flex items-center gap-1">
+                  <i class="fa-regular fa-folder-open"></i> Ver todos (10)
+                </button>
+              </div>
+              <select id="select-p" onchange="changeSelection('papel', this.value)" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-500"><option value="0">1. Age como assistente comercial de uma empresa de dist...</option><option value="1">2. Age como especialista em comunicação com clientes de...</option><option value="2">3. Age como coordenador de logística, com foco na clare...</option><option value="3">4. Age como assistente administrativo experiente em com...</option><option value="4">5. Age como chefe de vendas que ajuda a preparar reuniõ...</option><option value="5">6. Age como analista de operações que identifica padrõe...</option><option value="6">7. Age como formador de prompt engineering para profiss...</option><option value="7">8. Age como gestor de conta que procura compreender as ...</option><option value="8">9. Age como revisor de procedimentos internos, atento a...</option><option value="9">10. Age como especialista em comunicação operacional, ca...</option></select>
+            </div>
+
+            <!-- Current Text View -->
+            <div class="bg-violet-50/70 border border-violet-100 rounded-xl p-3 min-h-[115px] flex items-center">
+              <p id="text-p" class="text-xs text-slate-700 leading-relaxed italic">"Age como assistente comercial de uma empresa de distribuição alimentar."</p>
+            </div>
+
+            <!-- Stepper Navigation -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+              <button onclick="stepComponent('papel', -1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-violet-100 text-slate-600 hover:text-violet-700 flex items-center justify-center transition" title="Exemplo anterior">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <div class="flex items-center gap-1" id="dots-p"><span class="h-1.5 rounded-full transition cursor-pointer w-3.5 bg-violet-600" title="Exemplo 1"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 2"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 3"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 4"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 5"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 6"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 7"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 8"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 9"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 10"></span></div>
+              <button onclick="stepComponent('papel', 1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-violet-100 text-slate-600 hover:text-violet-700 flex items-center justify-center transition" title="Exemplo seguinte">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPONENTE: TAREFA (T) -->
+        <div class="bg-white rounded-2xl border border-amber-200 shadow-sm hover:shadow-md transition flex flex-col overflow-hidden relative group">
+          <div class="bg-gradient-to-r from-amber-600 to-yellow-600 text-white p-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-white/20 font-mono font-bold flex items-center justify-center text-sm shadow-inner">T</span>
+              <div>
+                <h3 class="font-bold text-sm leading-tight">Tarefa</h3>
+                <p class="text-[10px] text-amber-100 leading-none mt-0.5">Ação concreta e resultado pretendido</p>
+              </div>
+            </div>
+            <span id="badge-t" class="text-xs font-mono font-bold bg-white/25 px-2 py-0.5 rounded-full">#1</span>
+          </div>
+
+          <div class="p-3.5 flex-1 flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-1.5">
+                <label for="select-t" class="font-medium text-slate-600">Exemplo:</label>
+                <button onclick="openOverviewModal('tarefa')" class="text-amber-600 hover:text-amber-800 text-[11px] font-semibold inline-flex items-center gap-1">
+                  <i class="fa-regular fa-folder-open"></i> Ver todos (10)
+                </button>
+              </div>
+              <select id="select-t" onchange="changeSelection('tarefa', this.value)" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500"><option value="0">1. Escreve um email a pedir ao cliente a morada complet...</option><option value="1">2. Resume a reclamação do cliente em três partes: probl...</option><option value="2">3. Cria uma lista de perguntas para preparar uma reuniã...</option><option value="3">4. Reescreve esta mensagem interna para que as instruçõ...</option><option value="4">5. Organiza os dados deste relatório numa tabela com ce...</option><option value="5">6. Prepara uma agenda de 30 minutos para uma reunião se...</option><option value="6">7. Redige uma resposta inicial ao cliente a confirmar a...</option><option value="7">8. Compara estas duas versões de uma proposta comercial...</option><option value="8">9. Converte estas notas de reunião em tarefas com respo...</option><option value="9">10. Cria um exercício para ensinar colaboradores da Meig...</option></select>
+            </div>
+
+            <!-- Current Text View -->
+            <div class="bg-amber-50/70 border border-amber-100 rounded-xl p-3 min-h-[115px] flex items-center">
+              <p id="text-t" class="text-xs text-slate-700 leading-relaxed italic">"Escreve um email a pedir ao cliente a morada completa e o contacto da pessoa que vai receber a encomenda."</p>
+            </div>
+
+            <!-- Stepper Navigation -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+              <button onclick="stepComponent('tarefa', -1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-700 flex items-center justify-center transition" title="Exemplo anterior">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <div class="flex items-center gap-1" id="dots-t"><span class="h-1.5 rounded-full transition cursor-pointer w-3.5 bg-amber-600" title="Exemplo 1"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 2"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 3"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 4"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 5"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 6"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 7"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 8"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 9"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 10"></span></div>
+              <button onclick="stepComponent('tarefa', 1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-700 flex items-center justify-center transition" title="Exemplo seguinte">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPONENTE: FORMATO (F) -->
+        <div class="bg-white rounded-2xl border border-emerald-200 shadow-sm hover:shadow-md transition flex flex-col overflow-hidden relative group">
+          <div class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-white/20 font-mono font-bold flex items-center justify-center text-sm shadow-inner">F</span>
+              <div>
+                <h3 class="font-bold text-sm leading-tight">Formato</h3>
+                <p class="text-[10px] text-emerald-100 leading-none mt-0.5">Estrutura, tom, limites e regras</p>
+              </div>
+            </div>
+            <span id="badge-f" class="text-xs font-mono font-bold bg-white/25 px-2 py-0.5 rounded-full">#1</span>
+          </div>
+
+          <div class="p-3.5 flex-1 flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-1.5">
+                <label for="select-f" class="font-medium text-slate-600">Exemplo:</label>
+                <button onclick="openOverviewModal('formato')" class="text-emerald-600 hover:text-emerald-800 text-[11px] font-semibold inline-flex items-center gap-1">
+                  <i class="fa-regular fa-folder-open"></i> Ver todos (10)
+                </button>
+              </div>
+              <select id="select-f" onchange="changeSelection('formato', this.value)" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"><option value="0">1. Responde em português de Portugal, num tom profissio...</option><option value="1">2. Apresenta a resposta como email, com assunto, saudaç...</option><option value="2">3. Organiza a informação numa tabela com as colunas “Te...</option><option value="3">4. Usa uma lista numerada com, no máximo, seis passos.</option><option value="4">5. Dá primeiro um resumo de uma frase e depois três pon...</option><option value="5">6. Escreve num tom cordial e direto, sem linguagem dema...</option><option value="6">7. Apresenta duas versões: uma formal para email e outr...</option><option value="7">8. Usa apenas os factos fornecidos; identifica como “po...</option><option value="8">9. Estrutura a resposta em “Objetivo”, “Preparação”, “P...</option><option value="9">10. Limita-te a 120 palavras e termina com uma pergunta ...</option></select>
+            </div>
+
+            <!-- Current Text View -->
+            <div class="bg-emerald-50/70 border border-emerald-100 rounded-xl p-3 min-h-[115px] flex items-center">
+              <p id="text-f" class="text-xs text-slate-700 leading-relaxed italic">"Responde em português de Portugal, num tom profissional, em até 60 palavras."</p>
+            </div>
+
+            <!-- Stepper Navigation -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+              <button onclick="stepComponent('formato', -1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-emerald-100 text-slate-600 hover:text-emerald-700 flex items-center justify-center transition" title="Exemplo anterior">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <div class="flex items-center gap-1" id="dots-f"><span class="h-1.5 rounded-full transition cursor-pointer w-3.5 bg-emerald-600" title="Exemplo 1"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 2"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 3"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 4"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 5"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 6"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 7"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 8"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 9"></span><span class="w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400" title="Exemplo 10"></span></div>
+              <button onclick="stepComponent('formato', 1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-emerald-100 text-slate-600 hover:text-emerald-700 flex items-center justify-center transition" title="Exemplo seguinte">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Section: Assembled Prompt & Execution Hub -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- Left 8 cols: The Live Assembled Prompt -->
+      <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 flex flex-col gap-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h3 class="text-base font-bold text-slate-800">Prompt CPTF Completo (Pronto para Usar)</h3>
+            <span id="prompt-composition-badge" class="font-mono text-[11px] bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-md font-medium border border-slate-200">C1 • P1 • T1 • F1</span>
+          </div>
+
+          <!-- View Mode Toggle -->
+          <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg text-xs font-medium">
+            <button id="view-mode-blocks" onclick="setViewMode('blocks')" class="px-2.5 py-1 rounded-md bg-white text-slate-800 shadow-xs font-semibold">
+              <i class="fa-solid fa-layer-group mr-1 text-sky-600"></i>Blocos Coloridos
+            </button>
+            <button id="view-mode-raw" onclick="setViewMode('raw')" class="px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800">
+              <i class="fa-solid fa-font mr-1"></i>Texto Contínuo
+            </button>
+          </div>
+        </div>
+
+        <!-- Render View: Colored Blocks -->
+        <div id="render-blocks" class="flex flex-col gap-3 font-sans">
+          <!-- Context Block -->
+          <div class="flex gap-3 p-3.5 bg-blue-50/70 border-l-4 border-blue-600 rounded-r-xl">
+            <div class="shrink-0">
+              <span class="text-[10px] font-mono font-bold bg-blue-600 text-white px-2 py-0.5 rounded uppercase">Contexto</span>
+            </div>
+            <p id="out-c" class="text-sm text-slate-800 leading-relaxed font-normal">Trabalho na equipa comercial da Meigal e preciso de responder a um cliente de retalho que pediu informação sobre a entrega de uma encomenda.</p>
+          </div>
+
+          <!-- Role Block -->
+          <div class="flex gap-3 p-3.5 bg-violet-50/70 border-l-4 border-violet-600 rounded-r-xl">
+            <div class="shrink-0">
+              <span class="text-[10px] font-mono font-bold bg-violet-600 text-white px-2 py-0.5 rounded uppercase">Papel</span>
+            </div>
+            <p id="out-p" class="text-sm text-slate-800 leading-relaxed font-normal">Age como assistente comercial de uma empresa de distribuição alimentar.</p>
+          </div>
+
+          <!-- Task Block -->
+          <div class="flex gap-3 p-3.5 bg-amber-50/70 border-l-4 border-amber-600 rounded-r-xl">
+            <div class="shrink-0">
+              <span class="text-[10px] font-mono font-bold bg-amber-600 text-white px-2 py-0.5 rounded uppercase">Tarefa</span>
+            </div>
+            <p id="out-t" class="text-sm text-slate-800 leading-relaxed font-normal">Escreve um email a pedir ao cliente a morada completa e o contacto da pessoa que vai receber a encomenda.</p>
+          </div>
+
+          <!-- Format Block -->
+          <div class="flex gap-3 p-3.5 bg-emerald-50/70 border-l-4 border-emerald-600 rounded-r-xl">
+            <div class="shrink-0">
+              <span class="text-[10px] font-mono font-bold bg-emerald-600 text-white px-2 py-0.5 rounded uppercase">Formato</span>
+            </div>
+            <p id="out-f" class="text-sm text-slate-800 leading-relaxed font-normal">Responde em português de Portugal, num tom profissional, em até 60 palavras.</p>
+          </div>
+        </div>
+
+        <!-- Render View: Raw text (hidden initially) -->
+        <div id="render-raw" class="hidden">
+          <textarea id="raw-prompt-textarea" rows="7" class="w-full text-sm font-mono text-slate-800 bg-slate-50 border border-slate-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-sky-500 leading-relaxed resize-y"></textarea>
+          <p class="text-[11px] text-slate-400 mt-1 italic">Dica: podes afinar ou adicionar dados pontuais antes de copiar.</p>
+        </div>
+
+        <!-- Action bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
+          <div class="flex items-center gap-2 text-xs text-slate-500">
+            <span class="font-semibold text-slate-700" id="prompt-word-count">72</span> palavras
+            <span>•</span>
+            <span class="font-semibold text-slate-700" id="prompt-char-count">449</span> carateres
+          </div>
+
+          <div class="flex items-center gap-2.5">
+            <button onclick="copyFullPrompt()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm hover:shadow active:scale-95">
+              <i class="fa-regular fa-copy text-amber-300"></i>
+              <span>Copiar Prompt</span>
+            </button>
+            <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold transition shadow-md shadow-sky-600/20 active:scale-95">
+              <i class="fa-solid fa-arrow-up-right-from-square text-sky-200"></i>
+              <span>Testar no Gemini</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right 4 cols: Quality Checklist & Meigal Operational Notes -->
+      <div class="lg:col-span-4 flex flex-col gap-4">
+        
+        <!-- Checklist Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+          <div class="flex items-center gap-2 text-slate-800 font-bold text-sm mb-3">
+            <i class="fa-solid fa-list-check text-sky-600"></i>
+            <h4>Estrutura CPTF Validada</h4>
+          </div>
+
+          <ul class="space-y-2.5 text-xs text-slate-600">
+            <li class="flex items-start gap-2.5 p-2 rounded-lg bg-blue-50/50">
+              <i class="fa-solid fa-circle-check text-blue-600 text-sm mt-0.5"></i>
+              <div>
+                <strong class="text-slate-800 block font-semibold">Contexto</strong>
+                <span>Quem faz o pedido e a quem se destina.</span>
+              </div>
+            </li>
+            <li class="flex items-start gap-2.5 p-2 rounded-lg bg-violet-50/50">
+              <i class="fa-solid fa-circle-check text-violet-600 text-sm mt-0.5"></i>
+              <div>
+                <strong class="text-slate-800 block font-semibold">Papel</strong>
+                <span>A perspetiva e o grau de autoridade da resposta.</span>
+              </div>
+            </li>
+            <li class="flex items-start gap-2.5 p-2 rounded-lg bg-amber-50/50">
+              <i class="fa-solid fa-circle-check text-amber-600 text-sm mt-0.5"></i>
+              <div>
+                <strong class="text-slate-800 block font-semibold">Tarefa</strong>
+                <span>Ação direta e entregável concreto definido.</span>
+              </div>
+            </li>
+            <li class="flex items-start gap-2.5 p-2 rounded-lg bg-emerald-50/50">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-sm mt-0.5"></i>
+              <div>
+                <strong class="text-slate-800 block font-semibold">Formato</strong>
+                <span>Limites de dimensão, estilo e restrições factuais.</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+            <span class="text-slate-500 font-medium">Estado da fórmula:</span>
+            <span class="text-emerald-700 font-bold bg-emerald-100 px-2.5 py-0.5 rounded-full inline-flex items-center gap-1">
+              <i class="fa-solid fa-shield-halved text-[10px]"></i> 100% Completo
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Educational Footer Cards: The 4 Rules -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-2">
+      <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs shadow-2xs">
+        <span class="font-bold text-blue-700 block mb-1">Dica de Contexto</span>
+        <p class="text-slate-600 leading-normal">Indicar o canal (HORECA, retalho ou institucional) poupa o Gemini de fazer suposições genéricas.</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs shadow-2xs">
+        <span class="font-bold text-violet-700 block mb-1">Dica de Papel</span>
+        <p class="text-slate-600 leading-normal">Definir o papel alinha o vocabulário: um comercial fala de serviço; a logística foca rotas e horários.</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs shadow-2xs">
+        <span class="font-bold text-amber-700 block mb-1">Dica de Tarefa</span>
+        <p class="text-slate-600 leading-normal">Começa com verbos de ação claros: <em>"Resume"</em>, <em>"Cria uma lista"</em>, <em>"Compara"</em>, <em>"Reescreve"</em>.</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs shadow-2xs">
+        <span class="font-bold text-emerald-700 block mb-1">Dica de Formato</span>
+        <p class="text-slate-600 leading-normal">Especificar o limite de palavras ou formato em tabela evita respostas longas ou desestruturadas.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal: Ver Todos os Exemplos de uma Categoria -->
+  <div id="overviewModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div>
+          <h3 id="modal-category-title" class="font-bold text-slate-800 text-base">Todos os Exemplos</h3>
+          <p id="modal-category-subtitle" class="text-xs text-slate-500 mt-0.5">Clica num exemplo para selecioná-lo de imediato.</p>
+        </div>
+        <button onclick="toggleModal('overviewModal')" class="w-8 h-8 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="modal-examples-list" class="p-4 overflow-y-auto space-y-2 flex-1">
+        <!-- Injected by JS -->
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <button onclick="toggleModal('overviewModal')" class="px-4 py-2 rounded-lg bg-slate-800 text-white text-xs font-semibold hover:bg-slate-700 transition">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: O que é o Método CPTF -->
+  <div id="infoModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-sky-600 text-white flex items-center justify-center font-bold text-xs">IA</div>
+          <h3 class="font-bold text-slate-800 text-base">O Método CPTF na Meigal</h3>
+        </div>
+        <button onclick="toggleModal('infoModal')" class="w-8 h-8 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-5 overflow-y-auto text-xs space-y-4 text-slate-700 leading-relaxed">
+        <p>
+          O modelo <strong>CPTF</strong> é uma estrutura mnemónica criada para ajudar as equipas a tirarem o máximo partido de modelos como o <strong>Google Gemini</strong>, transformando pedidos vagos em instruções sem ambiguidades.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div class="border border-blue-200 bg-blue-50/50 p-3 rounded-xl">
+            <span class="font-bold text-blue-700 text-sm block mb-1">C • Contexto</span>
+            <p class="text-slate-600">Explica quem faz o pedido, para quem é a resposta e que dados do negócio devem guiar a resposta (ex: cliente HORECA, centro de distribuição de Leiria).</p>
+          </div>
+          <div class="border border-violet-200 bg-violet-50/50 p-3 rounded-xl">
+            <span class="font-bold text-violet-700 text-sm block mb-1">P • Papel</span>
+            <p class="text-slate-600">Define o tom, a mentalidade e o perfil técnico a assumir (ex: assistente comercial, analista de operações, formador de IA).</p>
+          </div>
+          <div class="border border-amber-200 bg-amber-50/50 p-3 rounded-xl">
+            <span class="font-bold text-amber-700 text-sm block mb-1">T • Tarefa</span>
+            <p class="text-slate-600">Especifica o verbo principal e a ação pretendida (ex: elaborar uma resposta a reclamação, estruturar uma agenda de 30 minutos).</p>
+          </div>
+          <div class="border border-emerald-200 bg-emerald-50/50 p-3 rounded-xl">
+            <span class="font-bold text-emerald-700 text-sm block mb-1">F • Formato</span>
+            <p class="text-slate-600">Restringe a forma de apresentação (ex: tabela comparativa, limite de 60 palavras, tom profissional sem jargão).</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-100 p-3.5 rounded-xl border border-slate-200 text-slate-600">
+          <span class="font-bold text-slate-800 block mb-1">Por que razão funciona tão bem?</span>
+          Ao fornecer as quatro dimensões, elimina-se o risco de alucinação e garante-se que a IA gera exatamente o que cada departamento da Meigal precisa para poupar tempo.
+        </div>
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <button onclick="toggleModal('infoModal')" class="px-4 py-2 rounded-lg bg-slate-800 text-white text-xs font-semibold hover:bg-slate-700 transition">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 text-slate-500 py-4 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>
+        <span class="font-semibold text-slate-700">Meigal &amp; Grupo Lusiaves</span> • Formação &amp; Engenharia de Prompts com Gemini
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script>
+    // --- Data Source provided for Meigal ---
+    const CPTF_DATA = {
+      contexto: {
+        code: 'C',
+        name: 'Contexto',
+        objective: 'Explicar quem faz o pedido, para quem é e que informação deve orientar a resposta.',
+        color: 'blue',
+        items: [
+          "Trabalho na equipa comercial da Meigal e preciso de responder a um cliente de retalho que pediu informação sobre a entrega de uma encomenda.",
+          "Sou gestor de operações da Meigal, empresa do Grupo Lusiaves que distribui produtos alimentares frescos e congelados. Quero preparar uma comunicação interna para as equipas dos centros de distribuição.",
+          "Estou a apoiar um cliente HORECA que reportou uma diferença entre a quantidade encomendada e a recebida. Tenho o número da encomenda, a guia de transporte e a descrição do problema.",
+          "Sou comercial e vou reunir com um cliente da indústria alimentar. Quero preparar perguntas sobre necessidades, volumes, frequência de entrega e requisitos do produto.",
+          "Trabalho na expedição do centro de distribuição de Leiria. Preciso de comunicar à equipa uma alteração na sequência de preparação das encomendas.",
+          "Sou administrativo e recebi um pedido de atualização dos dados de faturação de um cliente institucional. Quero responder com base nos dados que o cliente enviou e nos procedimentos internos aplicáveis.",
+          "Sou chefe de vendas e vou fazer uma reunião semanal com a equipa comercial. Quero rever oportunidades, propostas pendentes e próximos passos.",
+          "Trabalho na logística e estou a analisar reclamações de entregas feitas por diferentes centros de distribuição. A informação disponível inclui datas, destinos e motivos registados.",
+          "Sou gestor de operações e quero preparar uma breve análise para a direção sobre um problema recorrente na expedição. Usarei apenas os dados do relatório que vou fornecer.",
+          "Sou formador numa sessão de Gemini para colaboradores da Meigal, incluindo comerciais, administrativos, logística e operações. Quero usar um exemplo que seja compreensível para todas estas funções."
+        ]
+      },
+      papel: {
+        code: 'P',
+        name: 'Papel',
+        objective: 'Indicar a função ou perspetiva que deve orientar a resposta.',
+        color: 'violet',
+        items: [
+          "Age como assistente comercial de uma empresa de distribuição alimentar.",
+          "Age como especialista em comunicação com clientes de retalho e HORECA.",
+          "Age como coordenador de logística, com foco na clareza das instruções para as equipas de expedição.",
+          "Age como assistente administrativo experiente em comunicação profissional e organização de informação.",
+          "Age como chefe de vendas que ajuda a preparar reuniões objetivas com uma equipa comercial.",
+          "Age como analista de operações que identifica padrões, causas possíveis e questões a validar nos dados.",
+          "Age como formador de prompt engineering para profissionais que estão a começar a usar IA generativa.",
+          "Age como gestor de conta que procura compreender as necessidades do cliente antes de propor uma solução.",
+          "Age como revisor de procedimentos internos, atento a ambiguidades e passos em falta.",
+          "Age como especialista em comunicação operacional, capaz de adaptar a mesma mensagem a comerciais, administrativos e equipas de armazém."
+        ]
+      },
+      tarefa: {
+        code: 'T',
+        name: 'Tarefa',
+        objective: 'Descrever a ação e o resultado pretendido.',
+        color: 'amber',
+        items: [
+          "Escreve um email a pedir ao cliente a morada completa e o contacto da pessoa que vai receber a encomenda.",
+          "Resume a reclamação do cliente em três partes: problema comunicado, informação disponível e dados que ainda faltam.",
+          "Cria uma lista de perguntas para preparar uma reunião comercial com um cliente HORECA.",
+          "Reescreve esta mensagem interna para que as instruções de preparação da encomenda sejam fáceis de seguir.",
+          "Organiza os dados deste relatório numa tabela com centro de distribuição, tipo de ocorrência, frequência e informação por confirmar.",
+          "Prepara uma agenda de 30 minutos para uma reunião semanal da equipa comercial.",
+          "Redige uma resposta inicial ao cliente a confirmar a receção da reclamação, sem prometer uma solução antes de a situação ser analisada.",
+          "Compara estas duas versões de uma proposta comercial e assinala diferenças de preço, condições, produtos e validade.",
+          "Converte estas notas de reunião em tarefas com responsável, prazo e próximo passo; assinala os campos que não foram indicados.",
+          "Cria um exercício para ensinar colaboradores da Meigal a transformar um pedido vago num prompt CPTF mais claro."
+        ]
+      },
+      formato: {
+        code: 'F',
+        name: 'Formato',
+        objective: 'Definir a estrutura, o tom e os limites da resposta.',
+        color: 'emerald',
+        items: [
+          "Responde em português de Portugal, num tom profissional, em até 60 palavras.",
+          "Apresenta a resposta como email, com assunto, saudação, corpo e despedida.",
+          "Organiza a informação numa tabela com as colunas “Tema”, “Informação disponível” e “A confirmar”.",
+          "Usa uma lista numerada com, no máximo, seis passos.",
+          "Dá primeiro um resumo de uma frase e depois três pontos de apoio.",
+          "Escreve num tom cordial e direto, sem linguagem demasiado técnica.",
+          "Apresenta duas versões: uma formal para email e outra breve para WhatsApp profissional.",
+          "Usa apenas os factos fornecidos; identifica como “por confirmar” qualquer informação em falta.",
+          "Estrutura a resposta em “Objetivo”, “Preparação”, “Perguntas” e “Próximos passos”.",
+          "Limita-te a 120 palavras e termina com uma pergunta de esclarecimento, caso falte informação essencial."
+        ]
+      }
+    };
+
+    // Current State (0-indexed indices for [C, P, T, F])
+    let state = {
+      contexto: 0,
+      papel: 0,
+      tarefa: 0,
+      formato: 0,
+      viewMode: 'blocks' // 'blocks' or 'raw'
+    };
+
+    // Initialize UI on load
+    window.addEventListener('DOMContentLoaded', () => {
+      populateDropdowns();
+      createStepDots();
+      updateUI();
+    });
+
+    // Populate Select Options
+    function populateDropdowns() {
+      ['contexto', 'papel', 'tarefa', 'formato'].forEach(key => {
+        const select = document.getElementById(`select-${key[0]}`);
+        select.innerHTML = '';
+        CPTF_DATA[key].items.forEach((item, idx) => {
+          const opt = document.createElement('option');
+          opt.value = idx;
+          // Shorten preview in dropdown
+          const previewText = item.length > 55 ? item.substring(0, 52) + '...' : item;
+          opt.textContent = `${idx + 1}. ${previewText}`;
+          select.appendChild(opt);
+        });
+      });
+    }
+
+    // Create dot indicators
+    function createStepDots() {
+      ['contexto', 'papel', 'tarefa', 'formato'].forEach(key => {
+        const dotsContainer = document.getElementById(`dots-${key[0]}`);
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < 10; i++) {
+          const dot = document.createElement('span');
+          dot.className = `w-1.5 h-1.5 rounded-full transition cursor-pointer ${i === 0 ? 'bg-slate-700 w-3' : 'bg-slate-300'}`;
+          dot.title = `Exemplo ${i + 1}`;
+          dot.onclick = () => changeSelection(key, i);
+          dotsContainer.appendChild(dot);
+        }
+      });
+    }
+
+    // Step component by +1 or -1
+    function stepComponent(category, delta) {
+      let current = state[category];
+      let next = (current + delta + 10) % 10;
+      changeSelection(category, next);
+    }
+
+    // Change specific component selection
+    function changeSelection(category, index) {
+      state[category] = parseInt(index, 10);
+      updateUI();
+    }
+
+    // Update entire UI according to state
+    function updateUI() {
+      const keys = ['contexto', 'papel', 'tarefa', 'formato'];
+      
+      keys.forEach(key => {
+        const char = key[0];
+        const idx = state[key];
+        const text = CPTF_DATA[key].items[idx];
+
+        // Update card texts and badges
+        document.getElementById(`text-${char}`).textContent = `"${text}"`;
+        document.getElementById(`badge-${char}`).textContent = `#${idx + 1}`;
+        document.getElementById(`select-${char}`).value = idx;
+
+        // Update output text in bottom preview
+        document.getElementById(`out-${char}`).textContent = text;
+
+        // Update pagination dots
+        const dots = document.getElementById(`dots-${char}`).children;
+        for (let i = 0; i < dots.length; i++) {
+          if (i === idx) {
+            dots[i].className = `h-1.5 rounded-full transition cursor-pointer w-3.5 bg-${CPTF_DATA[key].color}-600`;
+          } else {
+            dots[i].className = 'w-1.5 h-1.5 rounded-full transition cursor-pointer bg-slate-300 hover:bg-slate-400';
+          }
+        }
+      });
+
+      // Update composition badge
+      document.getElementById('prompt-composition-badge').textContent = 
+        `C${state.contexto + 1} • P${state.papel + 1} • T${state.tarefa + 1} • F${state.formato + 1}`;
+
+      // Build full prompt text
+      const fullText = buildFullPromptText();
+      document.getElementById('raw-prompt-textarea').value = fullText;
+
+      // Update counters
+      const words = fullText.trim().split(/\s+/).filter(Boolean).length;
+      document.getElementById('prompt-word-count').textContent = words;
+      document.getElementById('prompt-char-count').textContent = fullText.length;
+    }
+
+    // Construct unified prompt text
+    function buildFullPromptText() {
+      const c = CPTF_DATA.contexto.items[state.contexto];
+      const p = CPTF_DATA.papel.items[state.papel];
+      const t = CPTF_DATA.tarefa.items[state.tarefa];
+      const f = CPTF_DATA.formato.items[state.formato];
+
+      return `[Contexto]\n${c}\n\n[Papel]\n${p}\n\n[Tarefa]\n${t}\n\n[Formato e Restrições]\n${f}`;
+    }
+
+    // Switch between colored blocks and raw text view
+    function setViewMode(mode) {
+      state.viewMode = mode;
+      const blocksView = document.getElementById('render-blocks');
+      const rawView = document.getElementById('render-raw');
+      const btnBlocks = document.getElementById('view-mode-blocks');
+      const btnRaw = document.getElementById('view-mode-raw');
+
+      if (mode === 'blocks') {
+        blocksView.classList.remove('hidden');
+        rawView.classList.add('hidden');
+        btnBlocks.className = 'px-2.5 py-1 rounded-md bg-white text-slate-800 shadow-xs font-semibold';
+        btnRaw.className = 'px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800';
+      } else {
+        blocksView.classList.add('hidden');
+        rawView.classList.remove('hidden');
+        btnRaw.className = 'px-2.5 py-1 rounded-md bg-white text-slate-800 shadow-xs font-semibold';
+        btnBlocks.className = 'px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800';
+        // Auto sync textarea
+        document.getElementById('raw-prompt-textarea').value = buildFullPromptText();
+      }
+    }
+
+    // Randomize all 4 components
+    function randomizeAll() {
+      state.contexto = Math.floor(Math.random() * 10);
+      state.papel = Math.floor(Math.random() * 10);
+      state.tarefa = Math.floor(Math.random() * 10);
+      state.formato = Math.floor(Math.random() * 10);
+      updateUI();
+      showToast("Combinação aleatória gerada!", "fa-dice");
+    }
+
+    // Reset back to example #1
+    function resetToDefault() {
+      state.contexto = 0;
+      state.papel = 0;
+      state.tarefa = 0;
+      state.formato = 0;
+      updateUI();
+      showToast("Reposto para os primeiros exemplos (C1, P1, T1, F1)", "fa-rotate-left");
+    }
+
+    // Preset selector helper
+    function applyPreset(c, p, t, f) {
+      state.contexto = c;
+      state.papel = p;
+      state.tarefa = t;
+      state.formato = f;
+      updateUI();
+      showToast("Cenário predefinido aplicado com sucesso!", "fa-bolt");
+    }
+
+    // Download self standalone HTML file to easily share with trainees
+    function downloadSelfHTML() {
+      const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'CPTF_Meigal_Laboratorio.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Ficheiro .html descarregado! Podes enviar aos formandos por email ou Teams.", "fa-circle-check");
+    }
+
+    // Copy prompt text to clipboard
+    function copyFullPrompt() {
+      let textToCopy = '';
+      if (state.viewMode === 'raw') {
+        textToCopy = document.getElementById('raw-prompt-textarea').value;
+      } else {
+        textToCopy = buildFullPromptText();
+      }
+
+      // Safe fallback copy
+      const textarea = document.createElement('textarea');
+      textarea.value = textToCopy;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      
+      try {
+        document.execCommand('copy');
+        showToast("Prompt CPTF copiado para a área de transferência!", "fa-copy");
+      } catch (err) {
+        showToast("Erro ao copiar. Seleciona e copia manualmente.", "fa-triangle-exclamation");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // Generic Modal Toggle
+    function toggleModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    // Open Overview Modal for specific component
+    function openOverviewModal(category) {
+      const catData = CPTF_DATA[category];
+      document.getElementById('modal-category-title').textContent = `${catData.name} (${catData.code}) - Todos os 10 Exemplos`;
+      document.getElementById('modal-category-subtitle').textContent = catData.objective;
+      
+      const listContainer = document.getElementById('modal-examples-list');
+      listContainer.innerHTML = '';
+
+      catData.items.forEach((item, idx) => {
+        const isCurrent = state[category] === idx;
+        const itemCard = document.createElement('div');
+        itemCard.className = `p-3 rounded-xl border text-xs cursor-pointer transition flex items-start gap-3 ${
+          isCurrent 
+            ? 'bg-sky-50 border-sky-400 text-sky-950 ring-1 ring-sky-300' 
+            : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
+        }`;
+        
+        itemCard.onclick = () => {
+          changeSelection(category, idx);
+          toggleModal('overviewModal');
+          showToast(`Selecionado ${catData.name} #${idx + 1}`, "fa-check");
+        };
+
+        itemCard.innerHTML = `
+          <span class="w-6 h-6 rounded-md font-mono font-bold flex items-center justify-center shrink-0 ${
+            isCurrent ? 'bg-sky-600 text-white' : 'bg-slate-200 text-slate-700'
+          }">${idx + 1}</span>
+          <div class="flex-1 leading-relaxed">
+            <p>${item}</p>
+          </div>
+          ${isCurrent ? '<i class="fa-solid fa-check text-sky-600 mt-1"></i>' : ''}
+        `;
+
+        listContainer.appendChild(itemCard);
+      });
+
+      toggleModal('overviewModal');
+    }
+
+    // Toast Notification helper
+    let toastTimeout = null;
+    function showToast(message, iconClass = "fa-circle-check") {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastMsg.textContent = message;
+      toastIcon.className = `fa-solid ${iconClass} text-emerald-400 text-lg`;
+
+      // Show
+      toast.classList.remove('opacity-0', 'translate-y-[-120%]', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-[-120%]', 'pointer-events-none');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2800);
+    }
+  </script>
+
+</body></html>

@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="pt"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meigal • Framework CPTF &amp; Técnicas de Prompt Engineering</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              navy: '#0b2239',
+              primary: '#0284c7',
+              dark: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .var-highlight {
+      background-color: #fef08a;
+      color: #854d0e;
+      padding: 0.1rem 0.35rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      font-family: monospace;
+      border: 1px dashed #ca8a04;
+    }
+  </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:"Plus Jakarta Sans", sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:"JetBrains Mono", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.sticky{position:sticky}.inset-0{inset:0px}.right-5{right:1.25rem}.top-0{top:0px}.top-5{top:1.25rem}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1\.5{margin-bottom:0.375rem}.mb-2{margin-bottom:0.5rem}.ml-1{margin-left:0.25rem}.mr-1{margin-right:0.25rem}.mt-0\.5{margin-top:0.125rem}.mt-auto{margin-top:auto}.mt-1{margin-top:0.25rem}.line-clamp-1{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-2\.5{height:0.625rem}.h-8{height:2rem}.h-1\.5{height:0.375rem}.h-6{height:1.5rem}.max-h-\[85vh\]{max-height:85vh}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-2\.5{width:0.625rem}.w-8{width:2rem}.w-full{width:100%}.w-1\.5{width:0.375rem}.w-4{width:1rem}.w-6{width:1.5rem}.min-w-\[280px\]{min-width:280px}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-7xl{max-width:80rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-y-\[-130\%\]{--tw-translate-y:-130%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-0{--tw-translate-y:0px;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.resize-y{resize:vertical}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-2\.5{gap:0.625rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.self-start{align-self:flex-start}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.whitespace-pre-line{white-space:pre-line}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-xl{border-radius:0.75rem}.rounded-r-xl{border-top-right-radius:0.75rem;border-bottom-right-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-t{border-top-width:1px}.border-amber-600{--tw-border-opacity:1;border-color:rgb(217 119 6 / var(--tw-border-opacity, 1))}.border-blue-600{--tw-border-opacity:1;border-color:rgb(37 99 235 / var(--tw-border-opacity, 1))}.border-emerald-600{--tw-border-opacity:1;border-color:rgb(5 150 105 / var(--tw-border-opacity, 1))}.border-sky-600\/40{border-color:rgb(2 132 199 / 0.4)}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.border-slate-600\/60{border-color:rgb(71 85 105 / 0.6)}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.border-violet-600{--tw-border-opacity:1;border-color:rgb(124 58 237 / var(--tw-border-opacity, 1))}.border-amber-200{--tw-border-opacity:1;border-color:rgb(253 230 138 / var(--tw-border-opacity, 1))}.border-sky-100{--tw-border-opacity:1;border-color:rgb(224 242 254 / var(--tw-border-opacity, 1))}.border-sky-200{--tw-border-opacity:1;border-color:rgb(186 230 253 / var(--tw-border-opacity, 1))}.border-slate-900{--tw-border-opacity:1;border-color:rgb(15 23 42 / var(--tw-border-opacity, 1))}.bg-amber-50{--tw-bg-opacity:1;background-color:rgb(255 251 235 / var(--tw-bg-opacity, 1))}.bg-amber-50\/70{background-color:rgb(255 251 235 / 0.7)}.bg-amber-600{--tw-bg-opacity:1;background-color:rgb(217 119 6 / var(--tw-bg-opacity, 1))}.bg-blue-50\/70{background-color:rgb(239 246 255 / 0.7)}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-brand-navy{--tw-bg-opacity:1;background-color:rgb(11 34 57 / var(--tw-bg-opacity, 1))}.bg-emerald-50\/70{background-color:rgb(236 253 245 / 0.7)}.bg-emerald-500{--tw-bg-opacity:1;background-color:rgb(16 185 129 / var(--tw-bg-opacity, 1))}.bg-emerald-600{--tw-bg-opacity:1;background-color:rgb(5 150 105 / var(--tw-bg-opacity, 1))}.bg-sky-600{--tw-bg-opacity:1;background-color:rgb(2 132 199 / var(--tw-bg-opacity, 1))}.bg-sky-900\/80{background-color:rgb(12 74 110 / 0.8)}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-200{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1))}.bg-slate-900\/60{background-color:rgb(15 23 42 / 0.6)}.bg-violet-50\/70{background-color:rgb(245 243 255 / 0.7)}.bg-violet-600{--tw-bg-opacity:1;background-color:rgb(124 58 237 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-sky-100{--tw-bg-opacity:1;background-color:rgb(224 242 254 / var(--tw-bg-opacity, 1))}.bg-sky-50{--tw-bg-opacity:1;background-color:rgb(240 249 255 / var(--tw-bg-opacity, 1))}.bg-slate-300{--tw-bg-opacity:1;background-color:rgb(203 213 225 / var(--tw-bg-opacity, 1))}.bg-slate-50\/70{background-color:rgb(248 250 252 / 0.7)}.bg-white\/20{background-color:rgb(255 255 255 / 0.2)}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-sky-500{--tw-gradient-from:#0ea5e9 var(--tw-gradient-from-position);--tw-gradient-to:rgb(14 165 233 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-sky-600{--tw-gradient-from:#0284c7 var(--tw-gradient-from-position);--tw-gradient-to:rgb(2 132 199 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-blue-600{--tw-gradient-to:#2563eb var(--tw-gradient-to-position)}.to-blue-700{--tw-gradient-to:#1d4ed8 var(--tw-gradient-to-position)}.p-1{padding:0.25rem}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-3\.5{padding:0.875rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-3\.5{padding-left:0.875rem;padding-right:0.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-3\.5{padding-top:0.875rem;padding-bottom:0.875rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}.pb-1{padding-bottom:0.25rem}.pb-2\.5{padding-bottom:0.625rem}.pb-3{padding-bottom:0.75rem}.pt-3{padding-top:0.75rem}.text-left{text-align:left}.font-mono{font-family:"JetBrains Mono", monospace}.font-sans{font-family:"Plus Jakarta Sans", sans-serif}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.italic{font-style:italic}.leading-normal{line-height:1.5}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-0.025em}.tracking-wide{letter-spacing:0.025em}.tracking-wider{letter-spacing:0.05em}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-amber-400{--tw-text-opacity:1;color:rgb(251 191 36 / var(--tw-text-opacity, 1))}.text-amber-500{--tw-text-opacity:1;color:rgb(245 158 11 / var(--tw-text-opacity, 1))}.text-amber-600{--tw-text-opacity:1;color:rgb(217 119 6 / var(--tw-text-opacity, 1))}.text-amber-700{--tw-text-opacity:1;color:rgb(180 83 9 / var(--tw-text-opacity, 1))}.text-amber-800{--tw-text-opacity:1;color:rgb(146 64 14 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-emerald-800{--tw-text-opacity:1;color:rgb(6 95 70 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-sky-600{--tw-text-opacity:1;color:rgb(2 132 199 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-violet-800{--tw-text-opacity:1;color:rgb(91 33 182 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-sky-700{--tw-text-opacity:1;color:rgb(3 105 161 / var(--tw-text-opacity, 1))}.text-sky-800{--tw-text-opacity:1;color:rgb(7 89 133 / var(--tw-text-opacity, 1))}.text-sky-900{--tw-text-opacity:1;color:rgb(12 74 110 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-900{--tw-text-opacity:1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-0{opacity:0}.opacity-100{opacity:1}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-emerald-600\/30{--tw-shadow-color:rgb(5 150 105 / 0.3);--tw-shadow:var(--tw-shadow-colored)}.shadow-sky-600\/20{--tw-shadow-color:rgb(2 132 199 / 0.2);--tw-shadow:var(--tw-shadow-colored)}.shadow-sky-600\/30{--tw-shadow-color:rgb(2 132 199 / 0.3);--tw-shadow:var(--tw-shadow-colored)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.hover\:border-slate-300:hover{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.hover\:bg-emerald-500:hover{--tw-bg-opacity:1;background-color:rgb(16 185 129 / var(--tw-bg-opacity, 1))}.hover\:bg-sky-500:hover{--tw-bg-opacity:1;background-color:rgb(14 165 233 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-100:hover{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-200:hover{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-300:hover{--tw-bg-opacity:1;background-color:rgb(203 213 225 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-700:hover{--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-800:hover{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-400:hover{--tw-bg-opacity:1;background-color:rgb(148 163 184 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-50:hover{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.hover\:from-sky-500:hover{--tw-gradient-from:#0ea5e9 var(--tw-gradient-from-position);--tw-gradient-to:rgb(14 165 233 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.hover\:to-blue-500:hover{--tw-gradient-to:#3b82f6 var(--tw-gradient-to-position)}.hover\:text-sky-800:hover{--tw-text-opacity:1;color:rgb(7 89 133 / var(--tw-text-opacity, 1))}.hover\:text-slate-800:hover{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:shadow:hover{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-sky-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(14 165 233 / var(--tw-ring-opacity, 1))}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@media (min-width: 640px){.sm\:w-auto{width:auto}.sm\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.sm\:flex-row{flex-direction:row}.sm\:p-5{padding:1.25rem}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:pb-0{padding-bottom:0px}}@media (min-width: 768px){.md\:block{display:block}.md\:flex-row{flex-direction:row}.md\:items-center{align-items:center}.md\:self-auto{align-self:auto}}@media (min-width: 1024px){.lg\:col-span-5{grid-column:span 5 / span 5}.lg\:col-span-7{grid-column:span 7 / span 7}.lg\:grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}.lg\:grid-cols-6{grid-template-columns:repeat(6, minmax(0, 1fr))}.lg\:px-8{padding-left:2rem;padding-right:2rem}}</style></head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-5 right-5 z-50 flex items-center gap-3 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl transition-all duration-300 transform opacity-100 translate-y-0">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-lg" id="toast-icon"></i>
+    <span id="toast-msg" class="text-sm font-medium">A mostrar todos os exemplos</span>
+  </div>
+
+  <!-- Header -->
+  <header class="bg-brand-navy text-white border-b border-slate-700/60 sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-blue-700 flex items-center justify-center shadow-lg font-bold text-white text-lg tracking-wider">
+          M
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold tracking-tight text-white">CPTF + Técnicas de Prompting</h1>
+            <span class="text-[11px] font-semibold uppercase tracking-wider bg-sky-900/80 text-sky-300 px-2.5 py-0.5 rounded-full border border-sky-600/40">Meigal • Grupo Lusiaves</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header actions: share and guide -->
+      <div class="flex items-center gap-2">
+        <button id="btn-share" onclick="downloadSelfHTML()" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition shadow-sm shadow-emerald-600/30" title="Descarregar ficheiro HTML autónomo para partilhar com os formandos">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Partilhar / Guardar</span>
+        </button>
+        <button onclick="randomPrompt()" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-600/60 transition shadow-sm hover:text-white" title="Explorar exemplo aleatório">
+          <i class="fa-solid fa-dice text-amber-400"></i>
+          <span>Aleatório</span>
+        </button>
+        <button onclick="toggleModal('guideModal')" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold transition shadow-sm shadow-sky-600/30">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Guia das 6 Técnicas</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Department Filter Subheader -->
+  <section class="bg-white border-b border-slate-200 py-2.5 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 w-full sm:w-auto">
+        <span class="text-slate-400 font-semibold uppercase text-[10px] tracking-wider shrink-0 flex items-center gap-1 mr-1">
+          <i class="fa-solid fa-users text-sky-600"></i> Área:
+        </span>
+        <button onclick="setDeptFilter('todos')" id="filter-todos" class="filter-btn px-2.5 py-1 rounded-md bg-slate-900 text-white font-medium transition">
+          Todas as Áreas
+        </button>
+        <button onclick="setDeptFilter('comercial')" id="filter-comercial" class="filter-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
+          Comercial &amp; Vendas
+        </button>
+        <button onclick="setDeptFilter('logistica')" id="filter-logistica" class="filter-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
+          Logística &amp; Expedição
+        </button>
+        <button onclick="setDeptFilter('admin')" id="filter-admin" class="filter-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
+          Administrativo
+        </button>
+        <button onclick="setDeptFilter('operacoes')" id="filter-operacoes" class="filter-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
+          Operações &amp; Direção
+        </button>
+        <button onclick="setDeptFilter('formacao')" id="filter-formacao" class="filter-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
+          Formação Gemini
+        </button>
+      </div>
+
+      <div class="text-[11px] text-slate-500 hidden md:block">
+        <span id="filtered-count" class="font-bold text-slate-700">60</span> exemplos adaptados à Meigal
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-1 w-full flex flex-col gap-5">
+
+    <!-- 1. Techniques Navigation Tabs -->
+    <div>
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-600">1. Escolhe a Técnica de Prompt Engineering</h2>
+        </div>
+        <span id="tech-badge-counter" class="text-xs font-semibold text-slate-500">10 Exemplos disponíveis</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5" id="technique-tabs"><button class="p-3 rounded-xl border text-left transition flex flex-col justify-between gap-2 bg-white border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-50">
+          <div class="flex items-center justify-between w-full">
+            <span class="w-6 h-6 rounded-lg font-mono font-bold text-xs flex items-center justify-center bg-slate-100 text-slate-600">1</span>
+            <i class="fa-solid fa-bolt text-slate-400 text-xs"></i>
+          </div>
+          <div>
+            <span class="font-bold text-xs block leading-tight text-slate-800">Zero-shot</span>
+            <span class="text-[10px] block mt-0.5 line-clamp-1 text-slate-500">10 exemplos</span>
+          </div>
+        </button><button class="p-3 rounded-xl border text-left transition flex flex-col justify-between gap-2 bg-white border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-50">
+          <div class="flex items-center justify-between w-full">
+            <span class="w-6 h-6 rounded-lg font-mono font-bold text-xs flex items-center justify-center bg-slate-100 text-slate-600">2</span>
+            <i class="fa-solid fa-layer-group text-slate-400 text-xs"></i>
+          </div>
+          <div>
+            <span class="font-bold text-xs block leading-tight text-slate-800">Few-shot</span>
+            <span class="text-[10px] block mt-0.5 line-clamp-1 text-slate-500">10 exemplos</span>
+          </div>
+        </button><button class="p-3 rounded-xl border text-left transition flex flex-col justify-between gap-2 bg-slate-900 border-slate-900 text-white shadow-md">
+          <div class="flex items-center justify-between w-full">
+            <span class="w-6 h-6 rounded-lg font-mono font-bold text-xs flex items-center justify-center bg-white/20 text-white">3</span>
+            <i class="fa-solid fa-brain text-sky-300 text-xs"></i>
+          </div>
+          <div>
+            <span class="font-bold text-xs block leading-tight text-white">Knowledge Gen</span>
+            <span class="text-[10px] block mt-0.5 line-clamp-1 text-slate-300">10 exemplos</span>
+          </div>
+        </button><button class="p-3 rounded-xl border text-left transition flex flex-col justify-between gap-2 bg-white border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-50">
+          <div class="flex items-center justify-between w-full">
+            <span class="w-6 h-6 rounded-lg font-mono font-bold text-xs flex items-center justify-center bg-slate-100 text-slate-600">4</span>
+            <i class="fa-solid fa-calculator text-slate-400 text-xs"></i>
+          </div>
+          <div>
+            <span class="font-bold text-xs block leading-tight text-slate-800">Chain of Thought</span>
+            <span class="text-[10px] block mt-0.5 line-clamp-1 text-slate-500">10 exemplos</span>
+          </div>
+        </button><button class="p-3 rounded-xl border text-left transition flex flex-col justify-between gap-2 bg-white border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-50">
+          <div class="flex items-center justify-between w-full">
+            <span class="w-6 h-6 rounded-lg font-mono font-bold text-xs flex items-center justify-center bg-slate-100 text-slate-600">5</span>
+            <i class="fa-solid fa-sitemap text-slate-400 text-xs"></i>
+          </div>
+          <div>
+            <span class="font-bold text-xs block leading-tight text-slate-800">Structure &amp; Instructions</span>
+            <span class="text-[10px] block mt-0.5 line-clamp-1 text-slate-500">10 exemplos</span>
+          </div>
+        </button><button class="p-3 rounded-xl border text-left transition flex flex-col justify-between gap-2 bg-white border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-50">
+          <div class="flex items-center justify-between w-full">
+            <span class="w-6 h-6 rounded-lg font-mono font-bold text-xs flex items-center justify-center bg-slate-100 text-slate-600">6</span>
+            <i class="fa-solid fa-arrows-rotate text-slate-400 text-xs"></i>
+          </div>
+          <div>
+            <span class="font-bold text-xs block leading-tight text-slate-800">Consistency</span>
+            <span class="text-[10px] block mt-0.5 line-clamp-1 text-slate-500">10 exemplos</span>
+          </div>
+        </button></div>
+    </div>
+
+    <!-- 2. Active Technique Banner & Example Selector -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex flex-col gap-4">
+      
+      <!-- Technique Overview Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100" id="tech-summary-container">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-brain text-lg"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold bg-sky-100 text-sky-800 px-2 py-0.5 rounded">Técnica #3</span>
+              <h3 class="font-bold text-base text-slate-800">Knowledge Generation</h3>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">A IA sintetiza e organiza primeiro a informação relevante e só depois executa a tarefa final.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 self-start md:self-auto">
+          <span class="text-[11px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 px-2.5 py-1 rounded-lg border border-slate-200">
+            Área: <strong class="text-slate-800">Formação / RH</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Example Selection Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+        
+        <div class="flex items-center gap-2 flex-1 min-w-[280px]">
+          <span class="text-xs font-bold text-slate-700 uppercase tracking-wide shrink-0">Exemplo:</span>
+          <select id="example-select" onchange="selectExampleIndex(this.value)" class="w-full text-xs font-medium bg-white border border-slate-300 rounded-lg p-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"><option value="0">1. Preparar uma visita comercial (Comercial HORECA)</option><option value="1">2. Analisar reclamações (Operações)</option><option value="2">3. Preparar uma resposta a um cliente (Apoio Comercial)</option><option value="3">4. Briefing para reunião operacional (Operações)</option><option value="4">5. Criar perguntas para cliente industrial (Comercial B2B)</option><option value="5">6. Organizar mudança operacional (Operações / Logística)</option><option value="6">7. Relatório semanal de vendas (Chefia de Vendas)</option><option value="7">8. Avaliar feedback de formação (Formação / RH)</option><option value="8">9. Comparar propostas comerciais (Comercial)</option><option value="9">10. Preparar procedimento a partir de notas (Expedição / Qualidade)</option></select>
+        </div>
+
+        <!-- Controls: Stepper & Modal trigger -->
+        <div class="flex items-center gap-2">
+          <button onclick="stepExample(-1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center transition shadow-2xs" title="Exemplo anterior">
+            <i class="fa-solid fa-chevron-left text-xs"></i>
+          </button>
+          
+          <div class="flex items-center gap-1 px-1" id="example-dots"><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #1"></span><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #2"></span><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #3"></span><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #4"></span><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #5"></span><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #6"></span><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #7"></span><span class="h-1.5 rounded-full transition cursor-pointer w-4 bg-sky-600" title="Exemplo #8"></span><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #9"></span><span class="h-1.5 rounded-full transition cursor-pointer w-1.5 bg-slate-300 hover:bg-slate-400" title="Exemplo #10"></span></div>
+
+          <button onclick="stepExample(1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center transition shadow-2xs" title="Exemplo seguinte">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+          </button>
+
+          <button onclick="openExamplesModal()" class="ml-1 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold transition shadow-2xs">
+            <i class="fa-solid fa-list-ul text-sky-600"></i>
+            <span>Ver os 10</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 3. Prompt Construction & CPTF Breakdown -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+      <!-- Left 7 cols: The Assembled CPTF Prompt -->
+      <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex flex-col gap-4">
+        
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h3 class="text-sm font-bold text-slate-800">Prompt Estruturado CPTF</h3>
+            <span id="card-example-title-badge" class="text-[11px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200">#8 Avaliar feedback de formação</span>
+          </div>
+
+          <!-- View Mode Toggle -->
+          <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg text-xs font-medium">
+            <button id="btn-mode-blocks" onclick="setViewMode('blocks')" class="px-2.5 py-1 rounded-md bg-white text-slate-800 shadow-xs font-semibold">
+              <i class="fa-solid fa-cubes mr-1 text-sky-600"></i>Blocos CPTF
+            </button>
+            <button id="btn-mode-text" onclick="setViewMode('text')" class="px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800">
+              <i class="fa-solid fa-file-lines mr-1"></i>Texto Contínuo
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode A: CPTF Blocks -->
+        <div id="view-blocks" class="flex flex-col gap-3 font-sans">
+          
+          <!-- Contexto -->
+          <div class="p-3.5 bg-blue-50/70 border-l-4 border-blue-600 rounded-r-xl transition">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[10px] font-mono font-bold bg-blue-600 text-white px-2 py-0.5 rounded uppercase tracking-wider">Contexto</span>
+              <span class="text-[11px] text-blue-800 font-medium">Quem pede e dados de negócio</span>
+            </div>
+            <p id="cptf-val-c" class="text-xs text-slate-800 leading-relaxed font-normal">Sou responsável pela formação interna e vou fornecer respostas anónimas dos participantes de uma sessão sobre Gemini.</p>
+          </div>
+
+          <!-- Papel -->
+          <div class="p-3.5 bg-violet-50/70 border-l-4 border-violet-600 rounded-r-xl transition">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[10px] font-mono font-bold bg-violet-600 text-white px-2 py-0.5 rounded uppercase tracking-wider">Papel</span>
+              <span class="text-[11px] text-violet-800 font-medium">Perspetiva e autoridade</span>
+            </div>
+            <p id="cptf-val-p" class="text-xs text-slate-800 leading-relaxed font-normal">Age como analista de aprendizagem e desenvolvimento.</p>
+          </div>
+
+          <!-- Tarefa -->
+          <div class="p-3.5 bg-amber-50/70 border-l-4 border-amber-600 rounded-r-xl transition">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[10px] font-mono font-bold bg-amber-600 text-white px-2 py-0.5 rounded uppercase tracking-wider">Tarefa &amp; Técnica</span>
+              <span class="text-[11px] text-amber-800 font-medium">Instrução ou exemplos aplicados</span>
+            </div>
+            <div id="cptf-val-t" class="text-xs text-slate-800 leading-relaxed font-normal whitespace-pre-line">Primeiro, agrupa as respostas por tema. Depois, identifica necessidades de formação recorrentes e sugere temas para o suporte pós-formação.</div>
+          </div>
+
+          <!-- Formato -->
+          <div class="p-3.5 bg-emerald-50/70 border-l-4 border-emerald-600 rounded-r-xl transition">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[10px] font-mono font-bold bg-emerald-600 text-white px-2 py-0.5 rounded uppercase tracking-wider">Formato</span>
+              <span class="text-[11px] text-emerald-800 font-medium">Estrutura e limites</span>
+            </div>
+            <p id="cptf-val-f" class="text-xs text-slate-800 leading-relaxed font-normal">Secções Temas recorrentes, Necessidades identificadas e Sugestões. Distingue frequência de interpretação.</p>
+          </div>
+
+        </div>
+
+        <!-- Mode B: Editable Raw Text -->
+        <div id="view-text" class="hidden flex flex-col gap-2">
+          <textarea id="prompt-raw-textarea" rows="11" class="w-full text-xs font-mono text-slate-800 bg-slate-50 border border-slate-300 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-sky-500 leading-relaxed resize-y"></textarea>
+          <div class="flex items-center justify-between text-[11px] text-slate-400">
+            <span>Dica: podes substituir termos entre parêntesis retos como <code class="bg-slate-200 px-1 py-0.5 rounded text-slate-700">[número]</code> diretamente no texto.</span>
+            <button onclick="resetCurrentPromptText()" class="text-sky-600 hover:text-sky-800 font-medium">Repor original</button>
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
+          <div class="flex items-center gap-2 text-xs text-slate-500">
+            <span class="font-semibold text-slate-700" id="prompt-word-count">58</span> palavras
+            <span>•</span>
+            <span class="font-semibold text-slate-700" id="prompt-char-count">457</span> carateres
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="copyPromptText()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm hover:shadow active:scale-95">
+              <i class="fa-regular fa-copy text-amber-300"></i>
+              <span>Copiar Prompt</span>
+            </button>
+            <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold transition shadow-md shadow-sky-600/20 active:scale-95">
+              <i class="fa-solid fa-arrow-up-right-from-square text-sky-200"></i>
+              <span>Abrir Gemini</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right 5 cols: Variables & Prompt Engineering Deep Dive -->
+      <div class="lg:col-span-5 flex flex-col gap-4">
+
+        <!-- Technique Anatomy Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col gap-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-microchip text-sky-600"></i>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700">Como funciona esta técnica</h4>
+            </div>
+            <span id="tech-indicator-tag" class="text-[10px] font-bold px-2 py-0.5 rounded uppercase bg-sky-100 text-sky-800">Knowledge Gen</span>
+          </div>
+
+          <p id="tech-explanation-body" class="text-xs text-slate-600 leading-relaxed">Esta técnica força a IA a processar internamente factos, categorias e limitações (fase de conhecimento) antes de redigir a resposta. Isto reduz drasticamente invenções ou conclusões precipitadas.</p>
+
+          <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs flex flex-col gap-1.5">
+            <span class="font-bold text-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-lightbulb text-amber-500"></i> Dica de Aplicação na Meigal:
+            </span>
+            <p id="tech-meigal-tip" class="text-slate-600 leading-normal">Essencial na análise de relatórios com múltiplos centros de distribuição (Leiria, etc.) ou quando se preparam reuniões com grandes contas industriais e HORECA.</p>
+          </div>
+        </div>
+
+        <!-- Placeholders / Variables in this prompt -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col gap-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-amber-600"></i>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700">Variáveis a Preencher</h4>
+            </div>
+            <span id="vars-count-badge" class="text-[11px] font-semibold text-slate-500">Nenhuma variável</span>
+          </div>
+
+          <p class="text-xs text-slate-500 leading-normal">
+            Termos entre parêntesis retos <code class="text-amber-700 bg-amber-50 px-1 py-0.5 rounded font-mono">[...]</code> são dados que a tua equipa deve preencher antes de enviar ao Gemini:
+          </p>
+
+          <div id="variables-list" class="flex flex-wrap gap-1.5"><span class="text-xs text-slate-400 italic">Prompt 100% autónomo (sem campos em aberto).</span></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Modal: Guide to all 6 Techniques -->
+  <div id="guideModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-sky-600 text-white flex items-center justify-center font-bold text-sm">IA</div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base">As 6 Técnicas de Prompting e o CPTF</h3>
+            <p class="text-xs text-slate-500">Guia de referência para a equipa Meigal / Grupo Lusiaves</p>
+          </div>
+        </div>
+        <button onclick="toggleModal('guideModal')" class="w-8 h-8 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 text-xs text-slate-700 leading-relaxed" id="guide-modal-content"><div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-bolt text-sky-600"></i> 1. Zero-shot Prompting
+            </span>
+          </div>
+          <p class="text-slate-600">No Zero-shot prompting, a IA executa o pedido sem necessitar de ver exemplos prévios de perguntas e respostas. Funciona excelentemente quando o Contexto, Papel, Tarefa e Formato estão claramente detalhados.</p>
+          <div class="text-[11px] text-sky-900 bg-sky-50 p-2 rounded-lg border border-sky-100 mt-1">
+            <strong>Quando usar na Meigal:</strong> Ideal para tarefas diretas do dia a dia da Meigal: emails de resposta rápida a clientes HORECA, elaboração de agendas de reunião e mensagens operacionais breves.
+          </div>
+        </div><div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-layer-group text-sky-600"></i> 2. Few-shot Prompting
+            </span>
+          </div>
+          <p class="text-slate-600">No Few-shot prompting, forneces à IA 1 a 3 exemplos do resultado esperado antes de pedires a resolução do caso real. Isto elimina a subjetividade e padroniza a formatação.</p>
+          <div class="text-[11px] text-sky-900 bg-sky-50 p-2 rounded-lg border border-sky-100 mt-1">
+            <strong>Quando usar na Meigal:</strong> Perfeito para triagem automática de pedidos de cotação, categorização de notas de crédito ou classificação de tipos de avaria/reclamação na Meigal.
+          </div>
+        </div><div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-brain text-sky-600"></i> 3. Knowledge Generation
+            </span>
+          </div>
+          <p class="text-slate-600">Esta técnica força a IA a processar internamente factos, categorias e limitações (fase de conhecimento) antes de redigir a resposta. Isto reduz drasticamente invenções ou conclusões precipitadas.</p>
+          <div class="text-[11px] text-sky-900 bg-sky-50 p-2 rounded-lg border border-sky-100 mt-1">
+            <strong>Quando usar na Meigal:</strong> Essencial na análise de relatórios com múltiplos centros de distribuição (Leiria, etc.) ou quando se preparam reuniões com grandes contas industriais e HORECA.
+          </div>
+        </div><div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-calculator text-sky-600"></i> 4. Chain of Thought
+            </span>
+          </div>
+          <p class="text-slate-600">O Chain of Thought (cadeia de raciocínio) orienta o modelo a explicitar as contas e regras passo a passo. Garante auditoria total: se houver um engano aritmético, é de deteção imediata.</p>
+          <div class="text-[11px] text-sky-900 bg-sky-50 p-2 rounded-lg border border-sky-100 mt-1">
+            <strong>Quando usar na Meigal:</strong> Perfeito para validação de rácios de entregas realizadas, cálculo de taxa de reclamações por centro ou comparação de preços por kg/unidade.
+          </div>
+        </div><div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-sitemap text-sky-600"></i> 5. Structure &amp; Instructions
+            </span>
+          </div>
+          <p class="text-slate-600">Esta técnica define um esqueleto obrigatório de saída (ex: Agradecimento → Confirmação → Próximo passo). Impede que o modelo divague ou omita partes essenciais.</p>
+          <div class="text-[11px] text-sky-900 bg-sky-50 p-2 rounded-lg border border-sky-100 mt-1">
+            <strong>Quando usar na Meigal:</strong> Perfeito para procedimentos de armazém/expedição, atas estruturadas de reuniões comerciais e comunicações formais a clientes da Meigal.
+          </div>
+        </div><div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-arrows-rotate text-sky-600"></i> 6. Consistency Prompting
+            </span>
+          </div>
+          <p class="text-slate-600">O Consistency Prompting garante que a IA produz sempre os mesmos campos em tarefas em massa. Não varia vocabulário nem altera a sintaxe.</p>
+          <div class="text-[11px] text-sky-900 bg-sky-50 p-2 rounded-lg border border-sky-100 mt-1">
+            <strong>Quando usar na Meigal:</strong> Indispensável para normalização de cotações, registo de feedback de clientes e relatórios diários de centros de distribuição.
+          </div>
+        </div></div>
+
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <button onclick="toggleModal('guideModal')" class="px-4 py-2 rounded-lg bg-slate-800 text-white text-xs font-semibold hover:bg-slate-700 transition">
+          Fechar Guia
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: List of 10 Examples for Current Technique -->
+  <div id="examplesModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div>
+          <h3 id="modal-technique-title" class="font-bold text-slate-800 text-base">Exemplos da Técnica</h3>
+          <p id="modal-technique-sub" class="text-xs text-slate-500 mt-0.5">Clica num exemplo para carregar no construtor</p>
+        </div>
+        <button onclick="toggleModal('examplesModal')" class="w-8 h-8 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="modal-examples-container" class="p-4 overflow-y-auto space-y-2 flex-1">
+        <!-- Injected by JS -->
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <button onclick="toggleModal('examplesModal')" class="px-4 py-2 rounded-lg bg-slate-800 text-white text-xs font-semibold hover:bg-slate-700 transition">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 text-slate-500 py-3.5 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>
+        <span class="font-semibold text-slate-700">Meigal &amp; Grupo Lusiaves</span> • Programa de Formação Prática em Inteligência Artificial
+      </div>
+      <div class="flex items-center gap-3 text-[11px] text-slate-400">
+        <span>Framework CPTF (Contexto, Papel, Tarefa, Formato)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic & Comprehensive Data -->
+  <script>
+    // --- Complete Dataset: 6 Techniques, 10 Real Examples each for Meigal ---
+    const TECHNIQUES = [
+      {
+        id: 'zero_shot',
+        num: 1,
+        name: 'Zero-shot',
+        badge: 'Zero-shot Prompting',
+        color: 'sky',
+        icon: 'fa-bolt',
+        desc: 'Sem exemplos de respostas: a IA recebe uma instrução clara e executa diretamente a tarefa.',
+        explanation: 'No Zero-shot prompting, a IA executa o pedido sem necessitar de ver exemplos prévios de perguntas e respostas. Funciona excelentemente quando o Contexto, Papel, Tarefa e Formato estão claramente detalhados.',
+        meigalTip: 'Ideal para tarefas diretas do dia a dia da Meigal: emails de resposta rápida a clientes HORECA, elaboração de agendas de reunião e mensagens operacionais breves.',
+        items: [
+          {
+            id: 1,
+            title: "Resposta sobre uma entrega",
+            dept: "comercial",
+            deptName: "Comercial / HORECA",
+            c: "Sou comercial da Meigal. Um cliente HORECA perguntou pelo estado da encomenda [número].",
+            p: "Age como assistente comercial de uma empresa de distribuição alimentar.",
+            t: "Redige uma resposta a confirmar que vamos verificar o estado da entrega. Não inventes uma previsão de chegada.",
+            f: "Email curto, em português de Portugal, cordial e profissional."
+          },
+          {
+            id: 2,
+            title: "Pedido de dados em falta",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Trabalho na equipa comercial e recebi um pedido de cotação sem indicação da morada de entrega.",
+            p: "Age como assistente comercial.",
+            t: "Escreve uma mensagem a pedir a morada completa necessária para preparar a cotação.",
+            f: "Email com assunto, saudação e despedida, até 70 palavras."
+          },
+          {
+            id: 3,
+            title: "Síntese de reclamação",
+            dept: "admin",
+            deptName: "Apoio ao Cliente / Retalho",
+            c: "Um cliente de retalho enviou uma reclamação sobre uma encomenda da Meigal.",
+            p: "Age como analista de apoio ao cliente.",
+            t: "Resume a reclamação e separa os factos confirmados das informações que ainda precisam de validação.",
+            f: "Duas secções com títulos, em português de Portugal."
+          },
+          {
+            id: 4,
+            title: "Preparação de visita comercial",
+            dept: "comercial",
+            deptName: "Comercial / HORECA",
+            c: "Sou comercial da Meigal e vou visitar um potencial cliente da área da restauração.",
+            p: "Age como gestor de conta experiente em HORECA.",
+            t: "Sugere perguntas para compreender as necessidades do cliente antes de apresentar uma proposta.",
+            f: "Lista numerada com até oito perguntas."
+          },
+          {
+            id: 5,
+            title: "Instrução de expedição",
+            dept: "logistica",
+            deptName: "Expedição / Logística",
+            c: "Trabalho na expedição de um centro de distribuição e preciso de comunicar uma alteração no processo de preparação de encomendas.",
+            p: "Age como especialista em comunicação operacional.",
+            t: "Reescreve a instrução para que os passos fiquem claros e fáceis de seguir.",
+            f: "Lista numerada, frases curtas e linguagem direta."
+          },
+          {
+            id: 6,
+            title: "Agenda de reunião comercial",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas da Meigal e vou conduzir a reunião semanal da equipa.",
+            p: "Age como facilitador de reuniões comerciais.",
+            t: "Prepara uma agenda que inclua oportunidades, propostas pendentes, dificuldades e próximos passos.",
+            f: "Agenda para 30 minutos, com duração sugerida para cada ponto."
+          },
+          {
+            id: 7,
+            title: "Confirmação de receção de documentos",
+            dept: "admin",
+            deptName: "Administrativo",
+            c: "Um cliente institucional enviou documentos para atualizar os dados da sua conta.",
+            p: "Age como assistente administrativo.",
+            t: "Redige uma resposta a confirmar a receção dos documentos, sem afirmar que já foram validados.",
+            f: "Email profissional, cordial e até 80 palavras."
+          },
+          {
+            id: 8,
+            title: "Resumo de relatório operacional",
+            dept: "operacoes",
+            deptName: "Operações",
+            c: "Sou gestor de operações e recebi um relatório sobre ocorrências de expedição em vários centros de distribuição.",
+            p: "Age como analista de operações.",
+            t: "Identifica os temas mais frequentes e assinala que dados seriam úteis para aprofundar a análise.",
+            f: "Resumo breve seguido de uma lista de dados em falta."
+          },
+          {
+            id: 9,
+            title: "Seguimento de proposta",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial da Meigal. Enviei uma proposta a um cliente há uma semana e ainda não recebi resposta.",
+            p: "Age como assistente de vendas.",
+            t: "Redige uma mensagem de seguimento que pergunte se o cliente precisa de algum esclarecimento.",
+            f: "Mensagem curta, cordial e sem pressionar o cliente."
+          },
+          {
+            id: 10,
+            title: "Comunicação de alteração interna",
+            dept: "operacoes",
+            deptName: "Comunicação / Operações",
+            c: "Uma alteração operacional vai afetar as equipas comerciais, administrativas e de logística.",
+            p: "Age como responsável de comunicação interna.",
+            t: "Prepara uma mensagem que explique a alteração, a data de início e a quem pedir esclarecimentos, usando apenas os dados fornecidos.",
+            f: "Título e três secções: “O que muda”, “A partir de quando” e “Contactos”."
+          }
+        ]
+      },
+      {
+        id: 'few_shot',
+        num: 2,
+        name: 'Few-shot',
+        badge: 'Few-shot Prompting',
+        color: 'indigo',
+        icon: 'fa-layer-group',
+        desc: 'A IA recebe exemplos de entrada e resposta para aprender exatamente o padrão pretendido.',
+        explanation: 'No Few-shot prompting, forneces à IA 1 a 3 exemplos do resultado esperado antes de pedires a resolução do caso real. Isto elimina a subjetividade e padroniza a formatação.',
+        meigalTip: 'Perfeito para triagem automática de pedidos de cotação, categorização de notas de crédito ou classificação de tipos de avaria/reclamação na Meigal.',
+        items: [
+          {
+            id: 1,
+            title: "Classificar pedidos de clientes",
+            dept: "comercial",
+            deptName: "Apoio Comercial",
+            c: "Trabalho no apoio comercial da Meigal e quero encaminhar mensagens para a equipa certa.",
+            p: "Age como assistente de triagem.",
+            t: "Usa os exemplos para classificar a nova mensagem:\n- “A fatura tem o endereço errado.” → Faturação\n- “Ainda não recebemos a encomenda.” → Entrega\n- “Queria acrescentar dois produtos ao pedido.” → Encomenda\n- “A embalagem chegou danificada.” → Reclamação\nNova mensagem: “[mensagem do cliente]”",
+            f: "Devolve apenas a categoria e uma justificação com até 10 palavras."
+          },
+          {
+            id: 2,
+            title: "Criar assuntos de email",
+            dept: "admin",
+            deptName: "Administrativo",
+            c: "Sou administrativo e preciso de criar assuntos claros para emails dirigidos a clientes.",
+            p: "Age como revisor de comunicação empresarial.",
+            t: "Segue os exemplos:\n- “Enviar cópia da fatura de outubro” → Envio de cópia da fatura de outubro\n- “Confirmar se chegou a encomenda” → Confirmação de receção da encomenda\nCria um assunto para: “[objetivo do email]”",
+            f: "Apresenta apenas um assunto, claro e conciso."
+          },
+          {
+            id: 3,
+            title: "Resumir notas de reunião",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e registo notas após reuniões com clientes.",
+            p: "Age como assistente de organização comercial.",
+            t: "Usa este padrão:\n- Notas: “Cliente procura produtos para pequeno-almoço. Enviar catálogo. Reunião em março.”\n  Resumo: Necessidade: gama para pequeno-almoço. Ação: enviar catálogo. Prazo: antes da reunião de março.\nResume estas notas: “[notas]”",
+            f: "Usa sempre os campos Necessidade, Ação e Prazo. Escreve “Não indicado” se faltar algo."
+          },
+          {
+            id: 4,
+            title: "Reescrever mensagens internas",
+            dept: "logistica",
+            deptName: "Logística",
+            c: "Trabalho na logística da Meigal e preciso de tornar mensagens internas mais claras.",
+            p: "Age como especialista em comunicação operacional.",
+            t: "Segue os exemplos:\n- Original: “Ver as paletes antes de sair.”\n  Reescrita: “Antes da saída, confirma se todas as paletes da encomenda estão preparadas.”\nReescreve: “[mensagem interna]”",
+            f: "Devolve apenas a versão revista, numa frase curta e direta."
+          },
+          {
+            id: 5,
+            title: "Identificar informação em falta",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e recebi pedidos de cotação incompletos.",
+            p: "Age como assistente comercial.",
+            t: "Usa os exemplos:\n- “Preciso de uma cotação para 20 caixas, entrega em Leiria.” → Falta: produtos pretendidos e data desejada.\n- “Quero preço para peito de frango, 10 kg.” → Falta: data e local de entrega.\nAnalisa este pedido: “[pedido do cliente]”",
+            f: "Lista apenas os dados em falta. Se estiver completo, escreve “Sem dados essenciais em falta”."
+          },
+          {
+            id: 6,
+            title: "Converter reclamações em categorias",
+            dept: "admin",
+            deptName: "Administrativo",
+            c: "Sou administrativo e registo reclamações recebidas por email.",
+            p: "Age como assistente de classificação de ocorrências.",
+            t: "Aprende com os exemplos:\n- “Recebi menos unidades do que as indicadas.” → Diferença de quantidade\n- “A mercadoria veio com a caixa rasgada.” → Embalagem danificada\n- “A entrega chegou depois da hora combinada.” → Atraso na entrega\nClassifica: “[descrição da reclamação]”",
+            f: "Categoria e resumo de uma frase, sem sugerir culpados."
+          },
+          {
+            id: 7,
+            title: "Criar perguntas de descoberta",
+            dept: "comercial",
+            deptName: "Comercial HORECA",
+            c: "Sou comercial da Meigal e preparo reuniões com clientes HORECA.",
+            p: "Age como gestor de conta consultivo.",
+            t: "Segue o padrão:\n- Necessidade: entregas mais frequentes → Pergunta: “Com que frequência seria útil receber entregas?”\n- Necessidade: ampliar a gama → Pergunta: “Que produtos gostaria de acrescentar à gama atual?”\nCria uma pergunta para explorar: “[necessidade do cliente]”",
+            f: "Uma pergunta aberta, neutra e sem pressupor a resposta."
+          },
+          {
+            id: 8,
+            title: "Extrair tarefas de notas",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas e quero transformar notas de reunião em ações.",
+            p: "Age como assistente de gestão comercial.",
+            t: "Usa os exemplos:\n- Nota: “A Ana envia a proposta até sexta.” → Responsável: Ana | Ação: enviar proposta | Prazo: sexta-feira\n- Nota: “Confirmar preços na próxima semana.” → Responsável: Não indicado | Ação: confirmar preços | Prazo: próxima semana\nExtrai as tarefas de: “[notas]”",
+            f: "Tabela com Responsável, Ação e Prazo."
+          },
+          {
+            id: 9,
+            title: "Ajustar o tom de uma mensagem",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e quero manter um tom profissional nas mensagens a clientes.",
+            p: "Age como revisor de comunicação com clientes.",
+            t: "Segue os exemplos:\n- Original: “Ainda não respondeu. Preciso de saber hoje.”\n  Revista: “Gostaria de confirmar se teve oportunidade de analisar a proposta. Se possível, agradeço o seu feedback durante o dia de hoje.”\nRevê esta mensagem: “[mensagem]”",
+            f: "Devolve apenas uma versão cordial, mantendo o pedido e sem acrescentar compromissos."
+          },
+          {
+            id: 10,
+            title: "Resumir dados de ocorrência",
+            dept: "operacoes",
+            deptName: "Operações",
+            c: "Sou gestor de operações e recebo registos de ocorrências dos centros de distribuição.",
+            p: "Age como analista de operações.",
+            t: "Segue os exemplos:\n- Registo: “Centro A; atraso; 3 ocorrências” → Centro: A | Tipo: atraso | Ocorrências: 3\n- Registo: “Centro B; diferença de quantidade; 1 ocorrência” → Centro: B | Tipo: diferença de quantidade | Ocorrências: 1\nOrganiza este registo: “[registo]”",
+            f: "Uma linha com os mesmos três campos. Não infiras causas."
+          }
+        ]
+      },
+      {
+        id: 'knowledge_gen',
+        num: 3,
+        name: 'Knowledge Gen',
+        badge: 'Knowledge Generation',
+        color: 'purple',
+        icon: 'fa-brain',
+        desc: 'A IA sintetiza e organiza primeiro a informação relevante e só depois executa a tarefa final.',
+        explanation: 'Esta técnica força a IA a processar internamente factos, categorias e limitações (fase de conhecimento) antes de redigir a resposta. Isto reduz drasticamente invenções ou conclusões precipitadas.',
+        meigalTip: 'Essencial na análise de relatórios com múltiplos centros de distribuição (Leiria, etc.) ou quando se preparam reuniões com grandes contas industriais e HORECA.',
+        items: [
+          {
+            id: 1,
+            title: "Preparar uma visita comercial",
+            dept: "comercial",
+            deptName: "Comercial HORECA",
+            c: "Sou comercial da Meigal e vou visitar um cliente HORECA. Vou fornecer notas sobre o negócio, a gama atual e necessidades já identificadas.",
+            p: "Age como gestor de conta e formador de vendas consultivas.",
+            t: "Primeiro, resume as necessidades e identifica lacunas nas notas. Depois, sugere perguntas para a visita com base apenas nessa informação.",
+            f: "Secções Síntese, Lacunas e Perguntas para a reunião. Se não houver informação suficiente, indica-o."
+          },
+          {
+            id: 2,
+            title: "Analisar reclamações",
+            dept: "operacoes",
+            deptName: "Operações",
+            c: "Sou gestor de operações e vou fornecer um conjunto de reclamações de clientes dos centros de distribuição.",
+            p: "Age como analista de qualidade de serviço.",
+            t: "Primeiro agrupa as reclamações por tema e calcula as frequências, se os dados permitirem. Depois, sugere pontos para investigar, distinguindo observações de hipóteses.",
+            f: "Tabela de frequências e lista de até cinco questões de investigação. Indica o número de registos analisados."
+          },
+          {
+            id: 3,
+            title: "Preparar uma resposta a um cliente",
+            dept: "comercial",
+            deptName: "Apoio Comercial",
+            c: "Trabalho no apoio comercial. Vou fornecer a mensagem do cliente, o estado conhecido da encomenda e as atualizações internas disponíveis.",
+            p: "Age como assistente de comunicação com clientes.",
+            t: "Primeiro, separa os factos confirmados das informações por validar. Depois, redige uma resposta com base apenas nos factos confirmados.",
+            f: "Apresenta Factos confirmados, A confirmar e Resposta sugerida. Não prometas prazos não confirmados."
+          },
+          {
+            id: 4,
+            title: "Briefing para reunião operacional",
+            dept: "operacoes",
+            deptName: "Operações",
+            c: "Sou gestor de operações da Meigal e vou fornecer indicadores de preparação de encomendas de vários centros.",
+            p: "Age como analista de operações.",
+            t: "Primeiro, identifica os indicadores disponíveis, os períodos e eventuais dados ausentes. Depois, prepara um briefing com as principais questões para a reunião.",
+            f: "Secções Dados recebidos, Limitações e Questões para discussão. Não atribuas causas sem evidência."
+          },
+          {
+            id: 5,
+            title: "Criar perguntas para cliente industrial",
+            dept: "comercial",
+            deptName: "Comercial B2B",
+            c: "Sou comercial e vou fornecer informação inicial sobre um potencial cliente da indústria alimentar.",
+            p: "Age como especialista em vendas B2B.",
+            t: "Primeiro, organiza o que sabemos sobre a atividade e as necessidades do cliente. Depois, cria perguntas para clarificar volumes, especificações, frequência e requisitos logísticos.",
+            f: "Tabela com Tema, Informação conhecida e Pergunta a colocar."
+          },
+          {
+            id: 6,
+            title: "Organizar mudança operacional",
+            dept: "operacoes",
+            deptName: "Operações / Logística",
+            c: "Sou responsável de operações e vou fornecer a descrição de uma alteração que afeta expedição e distribuição.",
+            p: "Age como analista de implementação operacional.",
+            t: "Primeiro, identifica as equipas afetadas, as ações necessárias e as dependências. Depois, prepara um plano de comunicação inicial e indica o que falta esclarecer.",
+            f: "Secções Impacto, Ações, Comunicação e Pontos por esclarecer."
+          },
+          {
+            id: 7,
+            title: "Relatório semanal de vendas",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas e vou fornecer dados de oportunidades, propostas e visitas da semana.",
+            p: "Age como analista comercial.",
+            t: "Primeiro, resume os dados e verifica se os períodos e categorias estão claros. Depois, destaca variações observáveis e propõe perguntas para a reunião da equipa.",
+            f: "Resumo executivo, tabela de indicadores e perguntas. Não calcules métricas sem os dados necessários."
+          },
+          {
+            id: 8,
+            title: "Avaliar feedback de formação",
+            dept: "formacao",
+            deptName: "Formação / RH",
+            c: "Sou responsável pela formação interna e vou fornecer respostas anónimas dos participantes de uma sessão sobre Gemini.",
+            p: "Age como analista de aprendizagem e desenvolvimento.",
+            t: "Primeiro, agrupa as respostas por tema. Depois, identifica necessidades de formação recorrentes e sugere temas para o suporte pós-formação.",
+            f: "Secções Temas recorrentes, Necessidades identificadas e Sugestões. Distingue frequência de interpretação."
+          },
+          {
+            id: 9,
+            title: "Comparar propostas comerciais",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e vou fornecer duas versões de uma proposta para o mesmo cliente.",
+            p: "Age como revisor de propostas comerciais.",
+            t: "Primeiro, identifica os campos comparáveis e eventuais omissões. Depois, resume as diferenças entre as versões sem recomendar uma delas.",
+            f: "Tabela com Campo, Versão A, Versão B e Diferença."
+          },
+          {
+            id: 10,
+            title: "Preparar procedimento a partir de notas",
+            dept: "logistica",
+            deptName: "Expedição / Qualidade",
+            c: "Sou supervisor de expedição e vou fornecer notas sobre um processo de preparação de encomendas.",
+            p: "Age como especialista em documentação operacional.",
+            t: "Primeiro, organiza as notas por sequência e identifica passos ambíguos. Depois, transforma apenas os passos claros num rascunho de procedimento e assinala os pontos a validar.",
+            f: "Lista numerada e secção final A validar com a equipa."
+          }
+        ]
+      },
+      {
+        id: 'chain_of_thought',
+        num: 4,
+        name: 'Chain of Thought',
+        badge: 'Chain of Thought',
+        color: 'amber',
+        icon: 'fa-calculator',
+        desc: 'Para cálculos e decisões verificáveis: pede fórmulas, critérios e passos intermédios explícitos.',
+        explanation: 'O Chain of Thought (cadeia de raciocínio) orienta o modelo a explicitar as contas e regras passo a passo. Garante auditoria total: se houver um engano aritmético, é de deteção imediata.',
+        meigalTip: 'Perfeito para validação de rácios de entregas realizadas, cálculo de taxa de reclamações por centro ou comparação de preços por kg/unidade.',
+        items: [
+          {
+            id: 1,
+            title: "Calcular variação de vendas",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas e quero comparar vendas de dois meses. Os valores são [mês A] = [valor] e [mês B] = [valor].",
+            p: "Age como analista comercial rigoroso.",
+            t: "Calcula a diferença absoluta e a variação percentual. Mostra a fórmula, os valores substituídos e o resultado. Se o valor de referência for zero, explica por que não é possível calcular a variação percentual usual.",
+            f: "Dados, Fórmula, Cálculo e Resultado."
+          },
+          {
+            id: 2,
+            title: "Conferir totais de encomendas",
+            dept: "admin",
+            deptName: "Administrativo",
+            c: "Sou administrativo e preciso de conferir o total de uma encomenda com várias linhas de produtos.",
+            p: "Age como assistente de controlo de dados.",
+            t: "Soma as quantidades e valores fornecidos, mostra as operações relevantes e identifica linhas sem preço ou quantidade.",
+            f: "Tabela com Linha, Cálculo, Subtotal e Observação, seguida do total."
+          },
+          {
+            id: 3,
+            title: "Comparar indicadores logísticos",
+            dept: "operacoes",
+            deptName: "Operações / Logística",
+            c: "Sou gestor de operações e tenho o número de entregas previstas e realizadas para dois centros de distribuição.",
+            p: "Age como analista de desempenho operacional.",
+            t: "Calcula a percentagem de entregas realizadas em cada centro e a diferença entre os resultados. Expõe a fórmula e assinala se os períodos não forem comparáveis.",
+            f: "Tabela com Centro, Previstas, Realizadas, Percentagem e Diferença."
+          },
+          {
+            id: 4,
+            title: "Calcular taxa de reclamações",
+            dept: "operacoes",
+            deptName: "Qualidade / Operações",
+            c: "Estou a preparar um relatório operacional. Foram registadas [número] reclamações em [número] entregas.",
+            p: "Age como analista de qualidade.",
+            t: "Calcula a taxa de reclamações por entrega e apresenta o cálculo. Explica que a métrica depende da definição de “reclamação” e da qualidade dos registos.",
+            f: "Fórmula, Substituição dos valores, Resultado e Pressupostos."
+          },
+          {
+            id: 5,
+            title: "Estimar tempo de reunião",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas e tenho [número] pontos para uma reunião de [duração] minutos.",
+            p: "Age como facilitador de reuniões.",
+            t: "Distribui o tempo pelos pontos, reservando [número] minutos para perguntas e decisões. Mostra a soma para confirmar que cabe no tempo total.",
+            f: "Agenda em tabela com Ponto, Duração e Total acumulado."
+          },
+          {
+            id: 6,
+            title: "Comparar preços por unidade",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e estou a comparar duas propostas de produto. A proposta A custa [valor] por [unidade] e a proposta B custa [valor] por [unidade].",
+            p: "Age como analista comercial.",
+            t: "Converte os preços para a mesma unidade, se os dados permitirem, e compara a diferença. Indica todos os fatores excluídos, como transporte ou impostos, se não estiverem nos dados.",
+            f: "Tabela com Proposta, Preço original, Preço normalizado e Diferença."
+          },
+          {
+            id: 7,
+            title: "Verificar cumprimento de objetivo",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas. O objetivo mensal é [valor] e o resultado atual é [valor].",
+            p: "Age como analista de desempenho comercial.",
+            t: "Calcula a percentagem do objetivo atingida e o valor que falta. Mostra os cálculos e não extrapoles o resultado futuro.",
+            f: "Apresenta Objetivo, Resultado atual, Percentagem atingida e Valor em falta."
+          },
+          {
+            id: 8,
+            title: "Rever distribuição de tarefas",
+            dept: "admin",
+            deptName: "Administrativo / Gestão",
+            c: "Estou a organizar tarefas administrativas com durações estimadas de [lista de tarefas e minutos].",
+            p: "Age como assistente de planeamento.",
+            t: "Soma as durações, identifica a tarefa mais longa e calcula o tempo médio por tarefa. Mostra operações simples e indica se alguma duração está em falta.",
+            f: "Tabela de tarefas e secção Resumo dos cálculos."
+          },
+          {
+            id: 9,
+            title: "Analisar desvio previsão vs realizado",
+            dept: "operacoes",
+            deptName: "Operações",
+            c: "Sou gestor de operações e tenho previsões e valores realizados para [indicador] em [período].",
+            p: "Age como analista de planeamento operacional.",
+            t: "Calcula a diferença entre previsão e realizado para cada período e assinala os períodos com maior desvio. Mostra o critério de ordenação utilizado.",
+            f: "Tabela ordenada por Maior desvio absoluto, com Previsão, Realizado e Desvio."
+          },
+          {
+            id: 10,
+            title: "Avaliar opções com critérios definidos",
+            dept: "operacoes",
+            deptName: "Operações",
+            c: "Sou gestor de operações e tenho de comparar opções de organização de uma tarefa. Vou fornecer opções e critérios com ponderações.",
+            p: "Age como facilitador de análise de decisão.",
+            t: "Aplica os critérios e ponderações fornecidos, mostra a pontuação de cada opção e indica o cálculo. Se os critérios ou ponderações não estiverem completos, pede os dados em falta.",
+            f: "Matriz de decisão, seguida do resultado e das limitações da comparação. Não escolhas em nome da equipa."
+          }
+        ]
+      },
+      {
+        id: 'structure_instructions',
+        num: 5,
+        name: 'Structure & Instructions',
+        badge: 'Structure & Instructions',
+        color: 'emerald',
+        icon: 'fa-sitemap',
+        desc: 'A IA recebe uma estrutura fixa com secções predefinidas e regras estritas para cada bloco.',
+        explanation: 'Esta técnica define um esqueleto obrigatório de saída (ex: Agradecimento → Confirmação → Próximo passo). Impede que o modelo divague ou omita partes essenciais.',
+        meigalTip: 'Perfeito para procedimentos de armazém/expedição, atas estruturadas de reuniões comerciais e comunicações formais a clientes da Meigal.',
+        items: [
+          {
+            id: 1,
+            title: "Resposta a uma reclamação",
+            dept: "comercial",
+            deptName: "Comercial / Apoio",
+            c: "Sou assistente comercial da Meigal e vou responder a uma reclamação de um cliente sobre [problema].",
+            p: "Age como especialista em apoio ao cliente.",
+            t: "Redige a resposta usando esta estrutura: Agradecimento, Confirmação do problema, Próximo passo e Pedido de informação adicional. Não admitas factos que não estejam confirmados.",
+            f: "Email em português de Portugal, tom empático e profissional, até 120 palavras."
+          },
+          {
+            id: 2,
+            title: "Briefing de visita comercial",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e vou visitar [tipo de cliente]. Tenho as seguintes notas: [notas].",
+            p: "Age como gestor de conta consultivo.",
+            t: "Prepara um briefing com as secções Objetivo da visita, Informação conhecida, Perguntas-chave e Próximo passo pretendido.",
+            f: "Títulos e listas curtas. Marca como A confirmar tudo o que não esteja nas notas."
+          },
+          {
+            id: 3,
+            title: "Procedimento de expedição",
+            dept: "logistica",
+            deptName: "Expedição / Logística",
+            c: "Sou supervisor de expedição e preciso de documentar o processo de [processo].",
+            p: "Age como redator de procedimentos operacionais.",
+            t: "Organiza a informação fornecida em: Objetivo, Responsáveis, Materiais ou sistemas, Passos, Exceções e Escalonamento. Não inventes procedimentos em falta.",
+            f: "Documento estruturado com passos numerados e secção A validar."
+          },
+          {
+            id: 4,
+            title: "Nota de reunião",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas e vou fornecer notas da reunião semanal.",
+            p: "Age como assistente de gestão comercial.",
+            t: "Organiza as notas nas secções Decisões, Ações, Responsáveis, Prazos e Temas pendentes.",
+            f: "Tabela para ações e listas para as restantes secções. Usa “Não indicado” quando faltar responsável ou prazo."
+          },
+          {
+            id: 5,
+            title: "Atualização a um cliente",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e preciso de atualizar o cliente sobre [assunto], com base nesta informação: [factos].",
+            p: "Age como assistente de comunicação comercial.",
+            t: "Escreve a mensagem com a estrutura Contexto, Estado atual, Próximo passo e Contacto para esclarecimentos. Não acrescentes prazos não fornecidos.",
+            f: "Email breve, cordial e direto."
+          },
+          {
+            id: 6,
+            title: "Relatório de ocorrências",
+            dept: "operacoes",
+            deptName: "Operações",
+            c: "Sou gestor de operações e vou fornecer registos de ocorrências de [período].",
+            p: "Age como analista operacional.",
+            t: "Prepara um relatório com Resumo, Ocorrências por categoria, Dados em falta e Questões para análise. Distingue contagens observadas de possíveis explicações.",
+            f: "Tabela para as ocorrências e até cinco perguntas no final."
+          },
+          {
+            id: 7,
+            title: "Plano de acompanhamento de cliente",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou gestor de conta e quero acompanhar o cliente [identificação] depois de uma reunião.",
+            p: "Age como assistente de planeamento comercial.",
+            t: "Cria um plano com Necessidade identificada, Ação, Responsável, Prazo e Estado. Usa apenas as informações fornecidas.",
+            f: "Uma tabela, com os campos em falta assinalados como A confirmar."
+          },
+          {
+            id: 8,
+            title: "Pedido de esclarecimento de encomenda",
+            dept: "admin",
+            deptName: "Administrativo",
+            c: "Sou administrativo e recebi um pedido de encomenda com informação incompleta: [pedido].",
+            p: "Age como assistente de serviço ao cliente.",
+            t: "Identifica os dados em falta e redige um pedido de esclarecimento com Referência ao pedido, Informação necessária e Agradecimento.",
+            f: "Email curto, educado e sem acrescentar dados do cliente."
+          },
+          {
+            id: 9,
+            title: "Plano de reunião de equipa",
+            dept: "operacoes",
+            deptName: "Operações / Logística",
+            c: "Sou gestor de operações e vou conduzir uma reunião sobre [tema] com colaboradores de logística, expedição e administração.",
+            p: "Age como facilitador de reuniões interfuncionais.",
+            t: "Prepara uma agenda com Objetivo, Tópico, Pergunta para discussão, Responsável por apresentar e Tempo.",
+            f: "Tabela; soma os tempos e mantém a duração total abaixo de [limite]."
+          },
+          {
+            id: 10,
+            title: "Ficha de exercício de prompt engineering",
+            dept: "formacao",
+            deptName: "Formação Gemini",
+            c: "Sou formador numa sessão de Gemini para colaboradores da Meigal, com participantes de operações, logística, administração e vendas.",
+            p: "Age como formador de prompt engineering para adultos.",
+            t: "Cria um exercício que peça aos participantes para melhorar um pedido vago usando Contexto, Papel, Tarefa e Formato.",
+            f: "Inclui Objetivo, Pedido inicial, Instruções, Espaço para resposta e Critérios de avaliação. Duração máxima: [minutos]."
+          }
+        ]
+      },
+      {
+        id: 'consistency',
+        num: 6,
+        name: 'Consistency',
+        badge: 'Consistency Prompting',
+        color: 'rose',
+        icon: 'fa-arrows-rotate',
+        desc: 'A IA recebe um modelo fixo para manter resultados 100% homogéneos em tarefas repetitivas.',
+        explanation: 'O Consistency Prompting garante que a IA produz sempre os mesmos campos em tarefas em massa. Não varia vocabulário nem altera a sintaxe.',
+        meigalTip: 'Indispensável para normalização de cotações, registo de feedback de clientes e relatórios diários de centros de distribuição.',
+        items: [
+          {
+            id: 1,
+            title: "Registar reuniões comerciais",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial da Meigal e quero uniformizar os registos após reuniões com clientes.",
+            p: "Age como assistente de organização comercial.",
+            t: "Usa o exemplo:\n- Notas: “Cliente quer explorar produtos congelados. Enviar catálogo até sexta.”\n- Resultado: Necessidade: produtos congelados | Ação: enviar catálogo | Prazo: sexta-feira\nOrganiza estas notas: “[notas]”",
+            f: "Devolve sempre os campos Necessidade, Ação e Prazo. Usa “Não indicado” quando faltar um dado."
+          },
+          {
+            id: 2,
+            title: "Classificar reclamações",
+            dept: "admin",
+            deptName: "Administrativo",
+            c: "Sou administrativo e quero registar reclamações recebidas de clientes de forma uniforme.",
+            p: "Age como assistente de classificação.",
+            t: "Usa as categorias Atraso, Quantidade, Produto, Faturação e Outra. Exemplo: “A entrega chegou mais tarde do que o previsto.” → Atraso. Classifica: “[reclamação]”",
+            f: "Categoria, resumo de uma frase e informação em falta, se existir."
+          },
+          {
+            id: 3,
+            title: "Atualizações de encomenda",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e envio atualizações de estado de encomendas a clientes.",
+            p: "Age como assistente comercial.",
+            t: "Segue o padrão: Encomenda, Estado confirmado, Próxima atualização. Exemplo: Encomenda 123 | Em preparação | Atualização a confirmar pela equipa.",
+            f: "Usa sempre esses três campos. Não infiras o estado nem prometas uma data."
+          },
+          {
+            id: 4,
+            title: "Criar fichas de visita",
+            dept: "comercial",
+            deptName: "Comercial HORECA",
+            c: "Sou gestor de conta e quero preencher fichas de visita de clientes HORECA.",
+            p: "Age como assistente de vendas consultivas.",
+            t: "Organiza as notas segundo o exemplo: Cliente: Restaurante A | Necessidade: variedade de produtos | Oportunidade: gama a explorar | Próximo passo: enviar informação.",
+            f: "Usa sempre os campos Cliente, Necessidade, Oportunidade e Próximo passo. Marca dados ausentes como “Não indicado”."
+          },
+          {
+            id: 5,
+            title: "Registar ações de reunião",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas e quero acompanhar as ações decididas nas reuniões.",
+            p: "Age como assistente de acompanhamento de tarefas.",
+            t: "Usa o padrão: “Ana envia proposta até sexta” → Responsável: Ana | Ação: enviar proposta | Prazo: sexta-feira. Extrai as ações destas notas: “[notas]”",
+            f: "Tabela com Responsável, Ação e Prazo. Se não houver responsável ou prazo explícito, assinala-o."
+          },
+          {
+            id: 6,
+            title: "Resumir feedback de formação",
+            dept: "formacao",
+            deptName: "Formação",
+            c: "Sou responsável pela formação e quero organizar feedback de participantes das sessões de Gemini.",
+            p: "Age como analista de aprendizagem.",
+            t: "Segue o exemplo: “Gostei dos exemplos de emails” → Tema: exemplos práticos | Comentário: valorizou exercícios de email. Organiza este feedback: “[comentário]”",
+            f: "Usa sempre Tema e Comentário. Não atribuas opiniões que não estejam no texto."
+          },
+          {
+            id: 7,
+            title: "Normalizar pedidos de cotação",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e recebo pedidos de cotação com formatos diferentes.",
+            p: "Age como assistente de organização de pedidos.",
+            t: "Usa o padrão: “10 caixas de [produto], entrega em [local]” → Produto: [produto] | Quantidade: 10 caixas | Local: [local]. Organiza este pedido: “[pedido]”",
+            f: "Campos Produto, Quantidade, Local e Informação em falta. Não deduzas unidades ausentes."
+          },
+          {
+            id: 8,
+            title: "Criar resumos operacionais",
+            dept: "operacoes",
+            deptName: "Operações",
+            c: "Sou gestor de operações e recebo atualizações curtas de vários centros de distribuição.",
+            p: "Age como assistente de reporting operacional.",
+            t: "Segue o exemplo: “Leiria: 2 ocorrências de atraso” → Centro: Leiria | Tipo de ocorrência: atraso | Número: 2. Organiza: “[atualização]”",
+            f: "Mantém sempre esses três campos. Se houver vários tipos, cria uma linha por tipo."
+          },
+          {
+            id: 9,
+            title: "Rever comunicações a clientes",
+            dept: "comercial",
+            deptName: "Comercial",
+            c: "Sou comercial e quero rever mensagens antes de as enviar a clientes.",
+            p: "Age como revisor de comunicação profissional.",
+            t: "Segue o exemplo: “Mande os dados hoje.” → “Poderia, por favor, enviar os dados ainda durante o dia de hoje?” Revê: “[mensagem]”",
+            f: "Devolve Mensagem revista e Alteração principal. Mantém o significado e não acrescentes compromissos."
+          },
+          {
+            id: 10,
+            title: "Resumos semanais de vendas",
+            dept: "comercial",
+            deptName: "Chefia de Vendas",
+            c: "Sou chefe de vendas e quero que os resumos semanais da equipa sigam o mesmo padrão.",
+            p: "Age como assistente de reporting comercial.",
+            t: "Usa a estrutura Resultados, Propostas pendentes, Dificuldades e Próximos passos. Resume as notas desta semana: “[notas]”",
+            f: "Mantém sempre os quatro títulos, com até três pontos em cada secção. Se uma secção não tiver informação, escreve “Não indicado”."
+          }
+        ]
+      }
+    ];
+
+    // State
+    let currentTechIdx = 0;
+    let currentExampleIdx = 0;
+    let activeDeptFilter = 'todos';
+    let viewMode = 'blocks'; // 'blocks' or 'text'
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTechniqueTabs();
+      buildGuideModalContent();
+      updateView();
+    });
+
+    // Render Technique Selector Tabs
+    function renderTechniqueTabs() {
+      const container = document.getElementById('technique-tabs');
+      container.innerHTML = '';
+
+      TECHNIQUES.forEach((tech, idx) => {
+        const isActive = idx === currentTechIdx;
+        const btn = document.createElement('button');
+        btn.onclick = () => selectTechnique(idx);
+        btn.className = `p-3 rounded-xl border text-left transition flex flex-col justify-between gap-2 ${
+          isActive 
+            ? 'bg-slate-900 border-slate-900 text-white shadow-md' 
+            : 'bg-white border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-50'
+        }`;
+
+        btn.innerHTML = `
+          <div class="flex items-center justify-between w-full">
+            <span class="w-6 h-6 rounded-lg font-mono font-bold text-xs flex items-center justify-center ${
+              isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+            }">${tech.num}</span>
+            <i class="fa-solid ${tech.icon} ${isActive ? 'text-sky-300' : 'text-slate-400'} text-xs"></i>
+          </div>
+          <div>
+            <span class="font-bold text-xs block leading-tight ${isActive ? 'text-white' : 'text-slate-800'}">${tech.name}</span>
+            <span class="text-[10px] block mt-0.5 line-clamp-1 ${isActive ? 'text-slate-300' : 'text-slate-500'}">10 exemplos</span>
+          </div>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    // Switch active technique
+    function selectTechnique(idx) {
+      currentTechIdx = idx;
+      currentExampleIdx = 0;
+      renderTechniqueTabs();
+      updateView();
+      showToast(`Técnica selecionada: ${TECHNIQUES[idx].name}`);
+    }
+
+    // Step example prev/next
+    function stepExample(delta) {
+      const items = TECHNIQUES[currentTechIdx].items;
+      currentExampleIdx = (currentExampleIdx + delta + items.length) % items.length;
+      updateView();
+    }
+
+    // Select example index directly
+    function selectExampleIndex(idx) {
+      currentExampleIdx = parseInt(idx, 10);
+      updateView();
+    }
+
+    // Update entire screen view
+    function updateView() {
+      const tech = TECHNIQUES[currentTechIdx];
+      const item = tech.items[currentExampleIdx];
+
+      // 1. Update Technique Summary Bar
+      const summaryContainer = document.getElementById('tech-summary-container');
+      summaryContainer.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center shrink-0">
+            <i class="fa-solid ${tech.icon} text-lg"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold bg-sky-100 text-sky-800 px-2 py-0.5 rounded">Técnica #${tech.num}</span>
+              <h3 class="font-bold text-base text-slate-800">${tech.badge}</h3>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">${tech.desc}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 self-start md:self-auto">
+          <span class="text-[11px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 px-2.5 py-1 rounded-lg border border-slate-200">
+            Área: <strong class="text-slate-800">${item.deptName}</strong>
+          </span>
+        </div>
+      `;
+
+      // 2. Populate Dropdown
+      const select = document.getElementById('example-select');
+      select.innerHTML = '';
+      tech.items.forEach((ex, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${idx + 1}. ${ex.title} (${ex.deptName})`;
+        if (idx === currentExampleIdx) opt.selected = true;
+        select.appendChild(opt);
+      });
+
+      // 3. Render 10 Dots
+      const dotsContainer = document.getElementById('example-dots');
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < tech.items.length; i++) {
+        const dot = document.createElement('span');
+        const isActive = i === currentExampleIdx;
+        dot.className = `h-1.5 rounded-full transition cursor-pointer ${isActive ? 'w-4 bg-sky-600' : 'w-1.5 bg-slate-300 hover:bg-slate-400'}`;
+        dot.title = `Exemplo #${i + 1}`;
+        dot.onclick = () => selectExampleIndex(i);
+        dotsContainer.appendChild(dot);
+      }
+
+      // 4. Update CPTF Blocks
+      document.getElementById('card-example-title-badge').textContent = `#${item.id} ${item.title}`;
+      document.getElementById('cptf-val-c').innerHTML = highlightVariables(item.c);
+      document.getElementById('cptf-val-p').innerHTML = highlightVariables(item.p);
+      document.getElementById('cptf-val-t').innerHTML = highlightVariables(item.t);
+      document.getElementById('cptf-val-f').innerHTML = highlightVariables(item.f);
+
+      // 5. Update Raw Textarea
+      const fullText = buildFullPromptText(item);
+      document.getElementById('prompt-raw-textarea').value = fullText;
+
+      // 6. Update Word/Char counters
+      const words = fullText.trim().split(/\s+/).filter(Boolean).length;
+      document.getElementById('prompt-word-count').textContent = words;
+      document.getElementById('prompt-char-count').textContent = fullText.length;
+
+      // 7. Update Deep Dive & Tips
+      document.getElementById('tech-indicator-tag').textContent = tech.name;
+      document.getElementById('tech-indicator-tag').className = `text-[10px] font-bold px-2 py-0.5 rounded uppercase bg-sky-100 text-sky-800`;
+      document.getElementById('tech-explanation-body').textContent = tech.explanation;
+      document.getElementById('tech-meigal-tip').textContent = tech.meigalTip;
+
+      // 8. Extract Variables [brackets]
+      extractAndRenderVariables(fullText);
+    }
+
+    // Build raw prompt string
+    function buildFullPromptText(item) {
+      return `[Contexto]\n${item.c}\n\n[Papel]\n${item.p}\n\n[Tarefa]\n${item.t}\n\n[Formato]\n${item.f}`;
+    }
+
+    // Helper: Highlight [variables] in preview
+    function highlightVariables(text) {
+      if (!text) return '';
+      return text.replace(/\[([^\]]+)\]/g, '<span class="var-highlight">[$1]</span>');
+    }
+
+    // Extract variables and display badges
+    function extractAndRenderVariables(text) {
+      const regex = /\[([^\]]+)\]/g;
+      let match;
+      const vars = new Set();
+
+      while ((match = regex.exec(text)) !== null) {
+        // Exclude framework headers
+        const v = match[1].trim();
+        if (!['Contexto', 'Papel', 'Tarefa', 'Formato'].includes(v)) {
+          vars.add(v);
+        }
+      }
+
+      const container = document.getElementById('variables-list');
+      const badge = document.getElementById('vars-count-badge');
+      container.innerHTML = '';
+
+      if (vars.size === 0) {
+        badge.textContent = 'Nenhuma variável';
+        container.innerHTML = '<span class="text-xs text-slate-400 italic">Prompt 100% autónomo (sem campos em aberto).</span>';
+        return;
+      }
+
+      badge.textContent = `${vars.size} parâmetro(s)`;
+      vars.forEach(val => {
+        const span = document.createElement('span');
+        span.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-xs font-mono font-medium';
+        span.innerHTML = `<i class="fa-solid fa-pen text-[10px] text-amber-600"></i> [${val}]`;
+        container.appendChild(span);
+      });
+    }
+
+    // Reset current text to default
+    function resetCurrentPromptText() {
+      const item = TECHNIQUES[currentTechIdx].items[currentExampleIdx];
+      document.getElementById('prompt-raw-textarea').value = buildFullPromptText(item);
+      showToast('Texto do prompt reposto com sucesso!');
+    }
+
+    // Switch view mode (Blocks vs Raw Text)
+    function setViewMode(mode) {
+      viewMode = mode;
+      const bView = document.getElementById('view-blocks');
+      const tView = document.getElementById('view-text');
+      const bBtn = document.getElementById('btn-mode-blocks');
+      const tBtn = document.getElementById('btn-mode-text');
+
+      if (mode === 'blocks') {
+        bView.classList.remove('hidden');
+        tView.classList.add('hidden');
+        bBtn.className = 'px-2.5 py-1 rounded-md bg-white text-slate-800 shadow-xs font-semibold';
+        tBtn.className = 'px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800';
+      } else {
+        bView.classList.add('hidden');
+        tView.classList.remove('hidden');
+        tBtn.className = 'px-2.5 py-1 rounded-md bg-white text-slate-800 shadow-xs font-semibold';
+        bBtn.className = 'px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800';
+      }
+    }
+
+    // Filter by department
+    function setDeptFilter(dept) {
+      activeDeptFilter = dept;
+      
+      // Update filter buttons styling
+      const buttons = ['todos', 'comercial', 'logistica', 'admin', 'operacoes', 'formacao'];
+      buttons.forEach(d => {
+        const btn = document.getElementById(`filter-${d}`);
+        if (d === dept) {
+          btn.className = 'filter-btn px-2.5 py-1 rounded-md bg-slate-900 text-white font-medium transition';
+        } else {
+          btn.className = 'filter-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition';
+        }
+      });
+
+      // Find first item matching dept in current technique, or jump
+      if (dept !== 'todos') {
+        const curItems = TECHNIQUES[currentTechIdx].items;
+        const matchIdx = curItems.findIndex(i => i.dept === dept);
+        if (matchIdx !== -1) {
+          currentExampleIdx = matchIdx;
+          updateView();
+        } else {
+          // If not in current, find in another technique
+          for (let t = 0; t < TECHNIQUES.length; t++) {
+            const m = TECHNIQUES[t].items.findIndex(i => i.dept === dept);
+            if (m !== -1) {
+              selectTechnique(t);
+              currentExampleIdx = m;
+              updateView();
+              break;
+            }
+          }
+        }
+      }
+      showToast(dept === 'todos' ? 'A mostrar todos os exemplos' : `Filtro ativo: ${dept.toUpperCase()}`);
+    }
+
+    // Random Prompt
+    function randomPrompt() {
+      currentTechIdx = Math.floor(Math.random() * TECHNIQUES.length);
+      currentExampleIdx = Math.floor(Math.random() * 10);
+      renderTechniqueTabs();
+      updateView();
+      showToast('Combinação aleatória gerada!', 'fa-dice');
+    }
+
+    // Copy Prompt
+    function copyPromptText() {
+      let text = '';
+      if (viewMode === 'text') {
+        text = document.getElementById('prompt-raw-textarea').value;
+      } else {
+        const item = TECHNIQUES[currentTechIdx].items[currentExampleIdx];
+        text = buildFullPromptText(item);
+      }
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      try {
+        document.execCommand('copy');
+        showToast('Prompt CPTF copiado para a área de transferência!', 'fa-copy');
+      } catch (err) {
+        showToast('Erro ao copiar. Seleciona manualmente.', 'fa-triangle-exclamation');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // Download standalone HTML file to easily share with students
+    function downloadSelfHTML() {
+      const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'CPTF_Engenharia_Prompts_Meigal.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Ficheiro descarregado! Podes partilhá-lo por Teams ou email.', 'fa-circle-check');
+    }
+
+    // Modal Toggle
+    function toggleModal(id) {
+      const modal = document.getElementById(id);
+      modal.classList.toggle('hidden');
+    }
+
+    // Open Modal with 10 Examples for current technique
+    function openExamplesModal() {
+      const tech = TECHNIQUES[currentTechIdx];
+      document.getElementById('modal-technique-title').textContent = `${tech.badge} — Todos os 10 Exemplos`;
+      document.getElementById('modal-technique-sub').textContent = tech.desc;
+
+      const container = document.getElementById('modal-examples-container');
+      container.innerHTML = '';
+
+      tech.items.forEach((item, idx) => {
+        const isCurrent = idx === currentExampleIdx;
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-xl border text-xs cursor-pointer transition flex items-start gap-3 ${
+          isCurrent 
+            ? 'bg-sky-50 border-sky-400 text-sky-950 ring-1 ring-sky-300' 
+            : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
+        }`;
+
+        card.onclick = () => {
+          selectExampleIndex(idx);
+          toggleModal('examplesModal');
+          showToast(`Selecionado: #${item.id} ${item.title}`);
+        };
+
+        card.innerHTML = `
+          <span class="w-6 h-6 rounded-md font-mono font-bold flex items-center justify-center shrink-0 ${
+            isCurrent ? 'bg-sky-600 text-white' : 'bg-slate-200 text-slate-700'
+          }">${item.id}</span>
+          <div class="flex-1 leading-relaxed">
+            <div class="flex items-center gap-2 mb-1">
+              <strong class="font-bold text-slate-900">${item.title}</strong>
+              <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200">${item.deptName}</span>
+            </div>
+            <p class="text-slate-600 line-clamp-2">${item.t}</p>
+          </div>
+          ${isCurrent ? '<i class="fa-solid fa-check text-sky-600 mt-1"></i>' : ''}
+        `;
+        container.appendChild(card);
+      });
+
+      toggleModal('examplesModal');
+    }
+
+    // Build Guide Modal
+    function buildGuideModalContent() {
+      const container = document.getElementById('guide-modal-content');
+      container.innerHTML = '';
+
+      TECHNIQUES.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col gap-1.5';
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i class="fa-solid ${t.icon} text-sky-600"></i> ${t.num}. ${t.badge}
+            </span>
+          </div>
+          <p class="text-slate-600">${t.explanation}</p>
+          <div class="text-[11px] text-sky-900 bg-sky-50 p-2 rounded-lg border border-sky-100 mt-1">
+            <strong>Quando usar na Meigal:</strong> ${t.meigalTip}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Toast Notification helper
+    let toastTimeout = null;
+    function showToast(message, iconClass = "fa-circle-check") {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastMsg.textContent = message;
+      toastIcon.className = `fa-solid ${iconClass} text-emerald-400 text-lg`;
+
+      toast.classList.remove('opacity-0', 'translate-y-[-130%]', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-[-130%]', 'pointer-events-none');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2600);
+    }
+  </script>
+
+</body></html>
